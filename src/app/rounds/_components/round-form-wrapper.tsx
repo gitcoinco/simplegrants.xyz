@@ -13,10 +13,9 @@ export default function RoundFormWrapper({ round }: { round?: Round }) {
   const router = useRouter();
   const upload = useFileUpload();
 
-  const utils = api.useUtils();
   const onSuccess = async (data: Round) => {
-    await utils.round.get.invalidate({ id: data.id });
     router.push(`/rounds/${data.id}`);
+    router.refresh();
   };
 
   const create = api.round.create.useMutation({ onSuccess });

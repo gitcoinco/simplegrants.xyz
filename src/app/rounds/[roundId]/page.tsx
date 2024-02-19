@@ -1,4 +1,3 @@
-import { unstable_noStore as noStore } from "next/cache";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,8 +12,6 @@ type Props = {
 };
 
 export default async function RoundPage({ params: { roundId } }: Props) {
-  noStore();
-
   const round = await api.round.get.query({ id: roundId });
   const session = await getServerAuthSession();
   if (!round) {
