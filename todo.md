@@ -17,3 +17,6 @@
 - [x] user can add grants to checkout
 - [ ] user can donate to grants
 - [ ] round manager can distribute round
+- [ ] opengraph
+- [ ] opengraph for round
+- [ ] opengraph for grant
