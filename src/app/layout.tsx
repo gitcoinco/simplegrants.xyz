@@ -6,7 +6,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import Link from "next/link";
 import { type ComponentProps } from "react";
 import { getServerAuthSession } from "~/server/auth";
-import { SignInButton } from "./api/(auth)/_components/sign-in";
+import { SignInButton } from "./(auth)/_components/sign-in";
 import { Button } from "~/components/ui/button";
 import { ShoppingCart, UserIcon } from "lucide-react";
 

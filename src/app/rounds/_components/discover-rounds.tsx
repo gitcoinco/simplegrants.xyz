@@ -9,7 +9,7 @@ type RoundProps = Round & {
 export function DiscoverRounds({ rounds }: { rounds: RoundProps[] }) {
   return (
     <div>
-      <div className="grid gap-2 md:grid-cols-3">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
         {rounds.map((round) => (
           <RoundCard key={round.id} {...round} />
         ))}
