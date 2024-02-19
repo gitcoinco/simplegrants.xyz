@@ -46,28 +46,39 @@ async function Header() {
   return (
     <header className="items-center justify-between p-2">
       <nav className="flex items-center justify-between">
-        <div className="h-8 w-8 rounded-full bg-gray-900"></div>
-        <div className="flex items-center  gap-2">
-          <Button
-            as={Link}
-            href={`/checkout`}
-            rounded="full"
-            icon={ShoppingCart}
-          />
-          <Button as={Link} href={`/profile`} rounded="full" icon={UserIcon} />
-          <SignInButton session={session} />
+        <Link href={"/"} className="">
+          <div className="h-8 w-8 rounded-full border-[16px] border-gray-900 transition-all hover:border-4 hover:bg-transparent" />
+        </Link>
+        <nav className="flex gap-2">
+          <NavLink href={"/rounds"}>Rounds</NavLink>
+          <NavLink href={"/grants"}>Grants</NavLink>
+        </nav>
+        <div className="flex items-center gap-2">
+          {session ? (
+            <>
+              <Button
+                as={Link}
+                href={`/checkout`}
+                rounded="full"
+                variant="ghost"
+                icon={ShoppingCart}
+              />
+              <Button
+                as={Link}
+                href={`/profile`}
+                rounded="full"
+                icon={UserIcon}
+              />
+            </>
+          ) : (
+            <SignInButton />
+          )}
         </div>
-      </nav>
-      <nav className="flex gap-2">
-        <NavLink href={"/rounds"}>Discover Rounds</NavLink>
-        <NavLink href={"/rounds/create"}>Create Round</NavLink>
-        <NavLink href={"/grants"}>Discover Grants</NavLink>
-        <NavLink href={"/grants/create"}>Create Grant</NavLink>
       </nav>
     </header>
   );
 }
 
 function NavLink(props: ComponentProps<typeof Link>) {
-  return <Link {...props} className="p-2 underline underline-offset-2" />;
+  return <Button as={Link} variant="ghost" {...props} />;
 }

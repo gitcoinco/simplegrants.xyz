@@ -1,14 +1,14 @@
 "use client";
 
-import type { Session } from "next-auth";
-import { signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { Button } from "~/components/ui/button";
 
-export function SignInButton({ session }: { session: Session | null }) {
-  if (session) return <Button onClick={() => signOut()}>Sign out</Button>;
-
+export function SignInButton() {
   return (
-    <Button onClick={() => signIn("google", { callbackUrl: "/" })}>
+    <Button
+      variant="ghost"
+      onClick={() => signIn("google", { callbackUrl: "/" })}
+    >
       Sign in
     </Button>
   );
