@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PageLayout } from "~/app/(layout)/_components/page";
+import { PageSection } from "~/app/(layout)/_components/page-section";
 import { Button } from "~/components/ui/button";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
@@ -18,7 +18,7 @@ export default async function RoundManageLayout({
 
   const roundUrl = `/rounds/${roundId}`;
   return (
-    <PageLayout
+    <PageSection
       title={round.name}
       backLink={roundUrl}
       action={
@@ -33,6 +33,6 @@ export default async function RoundManageLayout({
       }
     >
       {children}
-    </PageLayout>
+    </PageSection>
   );
 }

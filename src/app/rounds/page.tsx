@@ -1,7 +1,7 @@
 import { api } from "~/trpc/server";
 
 import { DiscoverRounds } from "./_components/discover-rounds";
-import { PageLayout } from "../(layout)/_components/page";
+import { PageSection } from "../(layout)/_components/page-section";
 import { Button } from "~/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -10,7 +10,7 @@ export default async function DiscoverRoundsPage() {
   const rounds = await api.round.list.query();
 
   return (
-    <PageLayout
+    <PageSection
       title="Discover Rounds"
       action={
         <Button as={Link} href="/rounds/create" icon={Plus}>
@@ -19,6 +19,6 @@ export default async function DiscoverRoundsPage() {
       }
     >
       <DiscoverRounds rounds={rounds} />
-    </PageLayout>
+    </PageSection>
   );
 }

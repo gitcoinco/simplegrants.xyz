@@ -7,7 +7,7 @@ import { api } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
 import { AddToCartButton } from "~/app/checkout/_components/add-to-cart";
 import { Edit } from "lucide-react";
-import { PageLayout } from "~/app/(layout)/_components/page";
+import { PageLayout } from "~/app/(layout)/_components/page-section";
 
 type Props = {
   params: { grantId: string };

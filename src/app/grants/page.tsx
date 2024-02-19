@@ -1,7 +1,7 @@
 import { api } from "~/trpc/server";
 
 import { DiscoverGrants } from "./_components/discover-grants";
-import { PageLayout } from "../(layout)/_components/page";
+import { PageLayout } from "../(layout)/_components/page-section";
 import { Plus } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
