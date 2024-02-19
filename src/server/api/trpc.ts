@@ -30,7 +30,7 @@ import { stripe } from "../stripe";
  *
  * @see https://trpc.io/docs/server/context
  */
-interface CreateContextOptions {
+export interface CreateContextOptions {
   session: Session | null;
   db: PrismaClient;
   stripe: Stripe;
@@ -39,8 +39,7 @@ export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
   return { ...opts };
 };
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  // const session = await getServerAuthSession();
-  const session = { user: { id: "test-user" } };
+  const session = await getServerAuthSession();
   return {
     db,
     stripe,

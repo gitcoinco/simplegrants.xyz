@@ -22,7 +22,7 @@ describe("Round", async () => {
       image: "https://image-url",
       startsAt: new Date(Date.now() + 1000),
       endsAt: new Date(Date.now() + 2000),
-      distributionType: "quadratic-funding",
+      distributionType: "quadratic_funding",
     };
     test("must be a logged in user", async () => {
       const caller = await createMockCaller({ session: null });

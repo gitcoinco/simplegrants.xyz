@@ -26,7 +26,7 @@ type Props = {
 export const ImageUpload = forwardRef(function ImageUpload(
   {
     name,
-    maxSize = 1024 * 1024, // 1 MB
+    maxSize = 1024 * 1024 * 5, // 5 MB
     className,
     upload,
   }: Props,

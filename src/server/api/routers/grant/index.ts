@@ -13,15 +13,14 @@ import {
   ZGrantCreateInputSchema,
   ZGrantUpdateInputSchema,
 } from "./grant.schemas";
-import { getRound } from "../round";
-import { getUser } from "../user";
 import {
   TransferType,
   createCheckout,
   createTransferGroup,
+  getCustomerFee,
 } from "~/server/stripe";
 
-async function getGrant(id: string, db: PrismaClient) {
+export async function getGrant(id: string, db: PrismaClient) {
   return db.grant.findFirst({ where: { id } });
 }
 
@@ -31,28 +30,29 @@ export const grantRouter = createTRPCRouter({
     .query(({ ctx, input }) => getGrant(input.id, ctx.db)),
 
   list: publicProcedure
-    .input(z.object({ roundId: z.string() }))
+    // .input(z.object({ roundId: z.string() }))
     .query(({ ctx, input }) =>
       ctx.db.grant.findMany({
-        where: { roundId: input.roundId },
+        include: { createdBy: true },
+        // where: { roundId: input.roundId },
+        // include: { grant: true },
       }),
     ),
 
   create: protectedProcedure
     .input(ZGrantCreateInputSchema)
     .mutation(async ({ ctx, input }) => {
-      const { roundId, ...data } = input;
+      const { ...data } = input;
       return ctx.db.grant.create({
         data: {
           ...data,
-          round: { connect: { id: roundId } },
           createdBy: { connect: { id: ctx.session.user.id } },
         },
       });
     }),
 
   update: protectedProcedure
-    .input(ZGrantUpdateInputSchema)
+    .input(z.object({ id: z.string(), data: ZGrantUpdateInputSchema }))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
       const grant = await getGrant(input.id, ctx.db);
@@ -75,10 +75,56 @@ export const grantRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const grantIds = input.grants.map((grant) => grant.id);
       const grants = await ctx.db.grant.findMany({
-        where: {
-          id: { in: grantIds },
-        },
+        where: { id: { in: grantIds } },
+        select: { id: true, name: true, description: true },
       });
+
+      const transferGroup = createTransferGroup();
+
+      await ctx.db.contribution.createMany({
+        data: input.grants.map(({ id, amount }) => ({
+          transferGroup,
+          amount,
+          grantId: id,
+          userId: ctx.session.user.id,
+        })),
+      });
+
+      const currency = "usd";
+      let totalDonation = 0;
+      const lineItems = grants.map((grant) => {
+        const amount = input.grants.find((g) => g.id === grant.id)?.amount;
+        if (!amount) {
+          throw new Error("Grant amount not found");
+        }
+
+        totalDonation += amount;
+        return {
+          quantity: 1,
+          price_data: {
+            currency,
+            product_data: {
+              name: grant.name,
+              description: grant.description ?? "",
+            },
+            unit_amount: amount * 100,
+          },
+        };
+      });
+
+      if (true) {
+        lineItems.push({
+          price_data: {
+            currency,
+            product_data: {
+              name: "Stripe Fees",
+              description: "Processing fees taken by Stripe",
+            },
+            unit_amount: Math.round(getCustomerFee(totalDonation) * 100),
+          },
+          quantity: 1,
+        });
+      }
 
       return createCheckout(
         {
@@ -87,21 +133,8 @@ export const grantRouter = createTRPCRouter({
             userId: ctx.session.user.id,
             type: TransferType.grant,
           },
-          transferGroup: createTransferGroup(),
-          lineItems: grants.map((grant) => {
-            const amount = input.grants.find((g) => g.id === grant.id)?.amount;
-            return {
-              quantity: 1,
-              price_data: {
-                currency: "usd",
-                product_data: {
-                  name: String(grant.name),
-                  description: String(grant.description),
-                },
-                unit_amount: amount,
-              },
-            };
-          }),
+          transferGroup,
+          lineItems,
         },
         ctx.stripe,
       );

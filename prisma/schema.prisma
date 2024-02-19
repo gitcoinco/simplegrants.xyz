@@ -6,12 +6,13 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-    url      = env("DATABASE_URL")
+    provider  = "postgresql"
+    url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+    directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+enum DistributionType {
+    quandratic_funding
 }
 
 model Round {
@@ -21,31 +22,91 @@ model Round {
     description      String?
     startsAt         DateTime
     endsAt           DateTime
-    grants           Grant[]
-    createdAt        DateTime @default(now())
-    updatedAt        DateTime @updatedAt
-    createdBy        User     @relation(fields: [createdById], references: [id])
     createdById      String
     distributionType String
+    stripeAccount    String?
+
+    createdBy    User          @relation(fields: [createdById], references: [id])
+    members      Membership[]
+    applications Application[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@index([name])
 }
 
 model Grant {
-    id           String   @id @default(cuid())
-    name         String
-    description  String?
-    image        String
-    createdAt    DateTime @default(now())
-    updatedAt    DateTime @updatedAt
-    createdBy    User     @relation(fields: [createdById], references: [id], name: "createdBy")
-    createdById  String
-    approvedBy   User?    @relation(fields: [approvedById], references: [id], name: "approvedBy")
-    approvedById String?
-    round        Round?   @relation(fields: [roundId], references: [id])
-    roundId      String?
+    id            String  @id @default(cuid())
+    name          String
+    description   String?
+    image         String
+    createdById   String
+    stripeAccount String?
+
+    createdBy    User          @relation(fields: [createdById], references: [id])
+    applications Application[]
+    members      Membership[]
+
+    createdAt    DateTime       @default(now())
+    updatedAt    DateTime       @updatedAt
+    contribution Contribution[]
 
     @@index([name])
+}
+
+enum MembershipRole {
+    owner
+    member
+}
+
+model Membership {
+    id      String         @id @default(cuid())
+    role    MembershipRole @default(member)
+    grantId String?
+    roundId String?
+    userId  String?
+
+    grant Grant? @relation(fields: [grantId], references: [id])
+    round Round? @relation(fields: [roundId], references: [id])
+    user  User?  @relation(fields: [userId], references: [id])
+
+    @@unique([userId, grantId, roundId])
+}
+
+enum ContributionStatus {
+    pending
+    success
+}
+
+model Contribution {
+    id            String             @id @default(cuid())
+    transferGroup String
+    amount        Int
+    grantId       String
+    userId        String
+    status        ContributionStatus @default(pending)
+
+    grant Grant @relation(fields: [grantId], references: [id])
+    user  User  @relation(fields: [userId], references: [id])
+}
+
+model Application {
+    id           String  @id @default(cuid())
+    grantId      String
+    roundId      String
+    approvedById String?
+    createdById  String
+
+    createdBy  User  @relation(fields: [createdById], references: [id], name: "createdBy")
+    approvedBy User? @relation(fields: [approvedById], references: [id], name: "approvedBy")
+    grant      Grant @relation(fields: [grantId], references: [id])
+    round      Round @relation(fields: [roundId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([grantId, roundId])
 }
 
 // Necessary for Next auth
@@ -76,17 +137,22 @@ model Session {
 }
 
 model User {
-    id             String    @id @default(cuid())
-    name           String?
-    email          String?   @unique
-    emailVerified  DateTime?
-    image          String?
-    stripeAccount  String?
-    accounts       Account[]
-    sessions       Session[]
-    rounds         Round[]
-    grants         Grant[]   @relation("createdBy")
-    approvedGrants Grant[]   @relation("approvedBy")
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    stripeAccount String?
+
+    accounts Account[]
+    sessions Session[]
+
+    memberships  Membership[]
+    rounds       Round[]
+    grants       Grant[]
+    applications Application[]  @relation(name: "createdBy")
+    approvals    Application[]  @relation(name: "approvedBy")
+    contribution Contribution[]
 }
 
 model VerificationToken {

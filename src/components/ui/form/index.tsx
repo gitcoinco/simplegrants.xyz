@@ -25,6 +25,8 @@ export function Form<S extends z.Schema>({
     resolver: zodResolver(schema),
   });
   const errors = form.formState.errors;
+
+  console.log(errors);
   return (
     <FormProvider {...form}>
       <form

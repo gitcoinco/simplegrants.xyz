@@ -13,20 +13,17 @@ export async function createCheckout(
   },
   stripe: Stripe,
 ) {
-  return stripe.checkout.sessions.create(
-    {
-      mode: "payment",
-      success_url: params.successUrl,
-      payment_method_types: ["card"],
-      payment_intent_data: {
-        // With this group we can query round balance and handle payouts
-        transfer_group: params.transferGroup,
-        metadata: params.metadata,
-      },
-      line_items: params.lineItems,
+  return stripe.checkout.sessions.create({
+    mode: "payment",
+    success_url: params.successUrl,
+    payment_method_types: ["card"],
+    payment_intent_data: {
+      // With this group we can query round balance and handle payouts
+      transfer_group: params.transferGroup,
+      metadata: params.metadata,
     },
-    { stripeAccount: params.stripeAccount },
-  );
+    line_items: params.lineItems,
+  });
 }
 
 export enum TransferType {

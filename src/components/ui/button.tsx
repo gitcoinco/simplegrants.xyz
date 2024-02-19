@@ -12,7 +12,7 @@ import { Spinner } from "./spinner";
 const ButtonComponent = createComponent(
   "button",
   tv({
-    base: "inline-flex transition-200 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+    base: "inline-flex transition-200 items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
     variants: {
       variant: {
         primary: "bg-primary-900 text-primary-100 hover:bg-primary-900/90 ",
@@ -25,9 +25,14 @@ const ButtonComponent = createComponent(
         md: "px-4 py-3",
         lg: "px-4 py-3 text-base font-semibold",
       },
+      rounded: {
+        default: "rounded-md",
+        full: "rounded-full",
+      },
     },
     defaultVariants: {
       variant: "default",
+      rounded: "default",
       size: "md",
     },
   }),
@@ -43,16 +48,19 @@ export function Button({
   icon?: FunctionComponent<any>;
   isLoading?: boolean;
 }) {
+  const Icon = isLoading ? Spinner : icon;
   return (
-    <ButtonComponent type="button" role="button" {...props}>
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        icon &&
-        createElement(icon, {
-          className: cn("size-3", { ["mr-2"]: Boolean(children) }),
-        })
-      )}
+    <ButtonComponent
+      type="button"
+      role="button"
+      disabled={isLoading}
+      size={icon && !children ? "icon" : undefined}
+      {...props}
+    >
+      {Icon &&
+        createElement(Icon, {
+          className: cn("size-4", { ["mr-2"]: Boolean(children) }),
+        })}
       {children}
     </ButtonComponent>
   );

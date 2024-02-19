@@ -38,7 +38,6 @@ export const roundRouter = createTRPCRouter({
   create: protectedProcedure
     .input(ZRoundCreateInputSchema)
     .mutation(async ({ ctx, input }) => {
-      console.log(input);
       return ctx.db.round.create({
         data: {
           ...input,
@@ -48,7 +47,7 @@ export const roundRouter = createTRPCRouter({
     }),
 
   update: protectedProcedure
-    .input(ZRoundUpdateInputSchema)
+    .input(z.object({ id: z.string(), data: ZRoundUpdateInputSchema }))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
       const round = await getRound(input.id, ctx.db);

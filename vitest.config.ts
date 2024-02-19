@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    exclude: [...configDefaults.exclude, "**/playwright/**"],
+    exclude: [...configDefaults.exclude, "**/playwright/**", "**/coverage/**"],
     alias: {
       "~/": fileURLToPath(new URL("./src/", import.meta.url)),
     },

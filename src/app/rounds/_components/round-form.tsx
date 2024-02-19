@@ -9,24 +9,23 @@ import { Input, Select, Textarea } from "~/components/ui/form/inputs";
 import {
   ZRoundCreateInputSchema,
   type TRoundCreateInputSchema,
+  type TRoundUpdateInputSchema,
+  distributionTypes,
 } from "~/server/api/routers/round/round.schemas";
 
 type Props = {
   isLoading?: boolean;
-  buttonText: string;
   upload: UploadFn;
   onSubmit: SubmitHandler<TRoundCreateInputSchema>;
-  defaultValues?: Partial<TRoundCreateInputSchema>;
+  defaultValues?: TRoundUpdateInputSchema;
 };
 
 export function RoundForm({
-  buttonText,
   defaultValues,
   isLoading,
   upload,
   onSubmit,
 }: Props) {
-  console.log({ defaultValues });
   return (
     <Form
       schema={ZRoundCreateInputSchema}
@@ -44,7 +43,11 @@ export function RoundForm({
       </Fieldset>
       <Fieldset label="Distribution type" name="distributionType">
         <Select>
-          <option value="quadratic-funding">Quadratic Funding</option>
+          {distributionTypes.map((type) => (
+            <option key={type.value} value={type.value}>
+              {type.label}
+            </option>
+          ))}
         </Select>
       </Fieldset>
       <div className="mb-2 gap-2 sm:flex">
@@ -61,12 +64,8 @@ export function RoundForm({
         type="submit"
         className="w-full"
       >
-        {buttonText}
+        Save round
       </Button>
     </Form>
   );
-}
-
-function formatDate(date: string) {
-  return new Date(date);
 }

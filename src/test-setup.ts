@@ -41,8 +41,9 @@ export const mockRoundCreated = {
   endsAt: new Date(Date.now() + ONE_DAY),
   createdAt: new Date(),
   updatedAt: new Date(),
-  createdById: "test-user",
+  createdById: mockUserCreated.id,
   distributionType: "quadratic-funding",
+  stripeAccount: "acct_roundAccount",
 };
 
 export const mockGrantCreated = {
@@ -55,6 +56,17 @@ export const mockGrantCreated = {
   createdById: mockUserCreated.id,
   roundId: mockRoundCreated.id,
   distributionType: "quadratic-funding",
+  stripeAccount: "acct_grantAccount",
+};
+
+export const mockApplicationCreated = {
+  id: "test-application",
+  name: "Test Application",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  createdById: mockUserCreated.id,
+  roundId: mockRoundCreated.id,
+  grantId: mockGrantCreated.id,
 };
 
 export const mockSession = {

@@ -23,12 +23,11 @@ describe("Round Form", () => {
       mutate: onUpload,
       isLoading: false,
     } as unknown as UploadFn;
-    const buttonText = "Create Round";
     const { user, container } = setup(
-      <RoundForm buttonText={buttonText} onSubmit={onSubmit} upload={upload} />,
+      <RoundForm onSubmit={onSubmit} upload={upload} />,
     );
 
-    await user.click(screen.getByRole("button", { name: buttonText }));
+    await user.click(screen.getByRole("button", { name: "Save round" }));
     expect(onSubmit).not.toHaveBeenCalled();
 
     await user.type(screen.getByLabelText("Name"), mockRoundCreated.name);
@@ -44,7 +43,7 @@ describe("Round Form", () => {
     await user.type(screen.getByLabelText("Starts at"), "2025-01-01");
     await user.type(screen.getByLabelText("Ends at"), "2025-02-01");
 
-    await user.click(screen.getByRole("button", { name: buttonText }));
+    await user.click(screen.getByRole("button", { name: "Save round" }));
 
     expect(onSubmit).toHaveBeenCalled();
   });

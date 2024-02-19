@@ -18,6 +18,11 @@ const config = {
         hostname: "*.unsplash.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "*.googleusercontent.com",
+        port: "",
+      },
     ],
   },
 };
