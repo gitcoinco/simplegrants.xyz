@@ -8,7 +8,7 @@ type RoundProps = Grant & {
 export function DiscoverGrants({ grants }: { grants: RoundProps[] }) {
   return (
     <div>
-      <div className="grid gap-2 md:grid-cols-3">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
         {grants.map((round) => (
           <RoundCard key={round.id} {...round} />
         ))}
@@ -17,7 +17,7 @@ export function DiscoverGrants({ grants }: { grants: RoundProps[] }) {
   );
 }
 
-function RoundCard({ id, name, description, image, createdBy }: RoundProps) {
+function RoundCard({ id, name, description, image }: RoundProps) {
   return (
     <Link href={`/grants/${id}`} className="border">
       <div className="relative aspect-square">
@@ -33,7 +33,6 @@ function RoundCard({ id, name, description, image, createdBy }: RoundProps) {
       </div>
       <div className="p-2">
         <h3 className="text-xl font-semibold">{name}</h3>
-        <div className="text-gray-600">{createdBy.name}</div>
         <div>{description}</div>
       </div>
     </Link>

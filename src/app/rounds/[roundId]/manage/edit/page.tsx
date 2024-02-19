@@ -11,7 +11,6 @@ export default async function EditRoundPage({
   if (!round) return notFound();
   return (
     <div>
-      Edit Grant page
       <RoundFormWrapper round={round} />
     </div>
   );

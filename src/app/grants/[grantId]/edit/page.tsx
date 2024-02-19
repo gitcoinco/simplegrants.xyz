@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { api } from "~/trpc/server";
 import GrantFormWrapper from "../../_components/grant-form-wrapper";
+import { Page } from "~/app/(layout)/_components/page";
 
 export default async function EditGrantPage({
   params,
@@ -10,9 +11,8 @@ export default async function EditGrantPage({
   const grant = await api.grant.get.query({ id: params.grantId });
   if (!grant) return notFound();
   return (
-    <div>
-      Edit Grant page
+    <Page backLink={`/grants/${grant.id}`} title={`Edit ${grant.name}`}>
       <GrantFormWrapper grant={grant} />
-    </div>
+    </Page>
   );
 }

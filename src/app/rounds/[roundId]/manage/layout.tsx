@@ -1,9 +1,8 @@
-import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Page } from "~/app/(layout)/_components/page";
 import { Button } from "~/components/ui/button";
 import { getServerAuthSession } from "~/server/auth";
-import "~/styles/globals.css";
 import { api } from "~/trpc/server";
 
 export default async function RoundManageLayout({
@@ -19,18 +18,10 @@ export default async function RoundManageLayout({
 
   const roundUrl = `/rounds/${roundId}`;
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Button
-            rounded="full"
-            variant="ghost"
-            as={Link}
-            icon={ChevronLeft}
-            href={roundUrl}
-          />
-          <h1 className="text-2xl font-semibold">{round.name}</h1>
-        </div>
+    <Page
+      title={round.name}
+      backLink={roundUrl}
+      action={
         <nav className="flex gap-1">
           <Button as={Link} href={`${roundUrl}/manage/edit`}>
             Edit
@@ -39,8 +30,9 @@ export default async function RoundManageLayout({
             Applications
           </Button>
         </nav>
-      </div>
-      <div>{children}</div>
-    </div>
+      }
+    >
+      {children}
+    </Page>
   );
 }

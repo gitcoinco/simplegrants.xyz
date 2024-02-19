@@ -1,10 +1,10 @@
+import { Page } from "~/app/(layout)/_components/page";
 import RoundFormWrapper from "../_components/round-form-wrapper";
 
 export default async function CreateRoundPage() {
   return (
-    <div>
-      Create Round page
+    <Page title="Create Round">
       <RoundFormWrapper />
-    </div>
+    </Page>
   );
 }

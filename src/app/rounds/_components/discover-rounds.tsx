@@ -25,7 +25,6 @@ function RoundCard({
   image,
   startsAt,
   endsAt,
-  createdBy,
 }: RoundProps) {
   return (
     <Link href={`/rounds/${id}`} className="border">
@@ -42,7 +41,6 @@ function RoundCard({
       </div>
       <div className="p-2">
         <h3 className="text-xl font-semibold">{name}</h3>
-        <div className="text-gray-600">{createdBy.name}</div>
         <div>{description}</div>
         <div>
           {formatDate(startsAt)} - {formatDate(endsAt)}

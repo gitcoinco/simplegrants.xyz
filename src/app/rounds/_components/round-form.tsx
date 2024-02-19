@@ -28,6 +28,7 @@ export function RoundForm({
 }: Props) {
   return (
     <Form
+      className="flex max-w-screen-sm flex-col gap-2"
       schema={ZRoundCreateInputSchema}
       onSubmit={onSubmit}
       defaultValues={defaultValues}
@@ -58,14 +59,12 @@ export function RoundForm({
           <Input />
         </Fieldset>
       </div>
-      <Button
-        variant="primary"
-        isLoading={isLoading}
-        type="submit"
-        className="w-full"
-      >
-        Save round
-      </Button>
+
+      <div className="flex justify-end">
+        <Button variant="primary" isLoading={isLoading} type="submit">
+          Save round
+        </Button>
+      </div>
     </Form>
   );
 }

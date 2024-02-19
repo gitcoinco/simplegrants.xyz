@@ -6,6 +6,8 @@ import { api } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
 import { getServerAuthSession } from "~/server/auth";
 import { RoundApply } from "../_components/round-apply";
+import { Page } from "~/app/(layout)/_components/page";
+import { Settings2 } from "lucide-react";
 
 type Props = {
   params: { roundId: string };
@@ -17,34 +19,36 @@ export default async function RoundPage({ params: { roundId } }: Props) {
   if (!round) {
     return notFound();
   }
-  const grants = await api.session.grants.query();
   const { name, image, description } = round;
   return (
-    <div>
-      <div className="mb-2 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">{round.name}</h1>
-        <div className="flex gap-2">
-          {session?.user.id === round.createdById && (
-            <>
-              <Button
-                variant="primary"
-                as={Link}
-                href={`/rounds/${roundId}/manage`}
-              >
-                Manage
-              </Button>
-            </>
-          )}
-          <Button
-            variant="primary"
-            as={Link}
-            href={`/rounds/${roundId}?action=apply`}
-          >
-            Apply to Round
-          </Button>
-          <RoundApply grants={grants} roundId={roundId}></RoundApply>
-        </div>
-      </div>
+    <Page
+      title={round.name}
+      action={
+        !session ? null : session.user.id === round.createdById ? (
+          <>
+            <Button
+              icon={Settings2}
+              variant="primary"
+              as={Link}
+              href={`/rounds/${roundId}/manage`}
+            >
+              Manage round
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              variant="primary"
+              as={Link}
+              href={`/rounds/${roundId}?action=apply`}
+            >
+              Apply to Round
+            </Button>
+            <RoundApply roundId={roundId} />
+          </>
+        )
+      }
+    >
       <div className="relative h-72">
         <Image
           alt={name}
@@ -58,6 +62,6 @@ export default async function RoundPage({ params: { roundId } }: Props) {
       </div>
 
       <div>{description}</div>
-    </div>
+    </Page>
   );
 }

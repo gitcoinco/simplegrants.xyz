@@ -27,16 +27,11 @@ export function GrantForm({
 }: Props) {
   return (
     <Form
-      className="flex flex-col gap-2"
+      className="flex max-w-screen-sm flex-col gap-2"
       schema={ZGrantCreateInputSchema}
       onSubmit={onSubmit}
       defaultValues={defaultValues}
     >
-      <div className="flex justify-end">
-        <Button variant="primary" isLoading={isLoading} type="submit">
-          Save grant
-        </Button>
-      </div>
       <Fieldset label="Name" name="name">
         <Input />
       </Fieldset>
@@ -50,6 +45,12 @@ export function GrantForm({
       <Fieldset label="Stripe account" name="stripeAccount">
         <Input />
       </Fieldset>
+
+      <div className="flex justify-end">
+        <Button variant="primary" isLoading={isLoading} type="submit">
+          Save grant
+        </Button>
+      </div>
     </Form>
   );
 }

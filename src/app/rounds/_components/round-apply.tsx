@@ -15,13 +15,8 @@ import {
 import { api } from "~/trpc/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export function RoundApply({
-  grants,
-  roundId,
-}: {
-  grants: Grant[];
-  roundId: string;
-}) {
+export function RoundApply({ roundId }: { roundId: string }) {
+  const grants = api.session.grants.useQuery();
   const apply = api.application.create.useMutation();
   const router = useRouter();
   const action = useSearchParams().get("action");
@@ -29,6 +24,7 @@ export function RoundApply({
   function handleClose() {
     router.replace(`/rounds/${roundId}`);
   }
+  if (grants.isLoading) return null;
   return (
     <Drawer.Root
       open={action === "apply"}
@@ -51,7 +47,7 @@ export function RoundApply({
           >
             <input type="hidden" value={roundId} name="roundId" />
             <div className="mb-2 max-h-52 divide-y overflow-auto rounded border">
-              {grants.map((grant) => (
+              {grants.data?.map((grant) => (
                 <GrantRadio
                   key={grant.id}
                   value={grant.id}
