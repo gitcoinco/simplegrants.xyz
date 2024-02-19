@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { PropsWithChildren, ReactNode } from "react";
 import { Button } from "~/components/ui/button";
 
-export function Page({
+export function PageLayout({
   title,
   backLink,
   action,

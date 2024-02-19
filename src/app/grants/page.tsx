@@ -1,7 +1,7 @@
 import { api } from "~/trpc/server";
 
 import { DiscoverGrants } from "./_components/discover-grants";
-import { Page } from "../(layout)/_components/page";
+import { PageLayout } from "../(layout)/_components/page";
 import { Plus } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
@@ -10,7 +10,7 @@ export default async function DiscoverGrantsPage() {
   const grants = await api.grant.list.query();
 
   return (
-    <Page
+    <PageLayout
       title="Discover Grants"
       action={
         <Button as={Link} href="/grants/create" icon={Plus}>
@@ -19,6 +19,6 @@ export default async function DiscoverGrantsPage() {
       }
     >
       <DiscoverGrants grants={grants} />
-    </Page>
+    </PageLayout>
   );
 }

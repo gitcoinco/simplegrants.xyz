@@ -6,7 +6,7 @@ import { api } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
 import { getServerAuthSession } from "~/server/auth";
 import { RoundApply } from "../_components/round-apply";
-import { Page } from "~/app/(layout)/_components/page";
+import { PageLayout } from "~/app/(layout)/_components/page";
 import { Settings2 } from "lucide-react";
 
 type Props = {
@@ -21,7 +21,7 @@ export default async function RoundPage({ params: { roundId } }: Props) {
   }
   const { name, image, description } = round;
   return (
-    <Page
+    <PageLayout
       title={round.name}
       action={
         !session ? null : session.user.id === round.createdById ? (
@@ -62,6 +62,6 @@ export default async function RoundPage({ params: { roundId } }: Props) {
       </div>
 
       <div>{description}</div>
-    </Page>
+    </PageLayout>
   );
 }

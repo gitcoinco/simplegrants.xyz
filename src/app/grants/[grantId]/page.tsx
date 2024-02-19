@@ -7,7 +7,7 @@ import { api } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
 import { AddToCartButton } from "~/app/checkout/_components/add-to-cart";
 import { Edit } from "lucide-react";
-import { Page } from "~/app/(layout)/_components/page";
+import { PageLayout } from "~/app/(layout)/_components/page";
 
 type Props = {
   params: { grantId: string };
@@ -20,7 +20,7 @@ export default async function GrantPage({ params }: Props) {
   }
   const { name, image, description, stripeAccount } = grant;
   return (
-    <Page
+    <PageLayout
       title={grant.name}
       action={
         <div className="flex gap-2">
@@ -48,6 +48,6 @@ export default async function GrantPage({ params }: Props) {
 
       <div>{description}</div>
       <div>{stripeAccount}</div>
-    </Page>
+    </PageLayout>
   );
 }
