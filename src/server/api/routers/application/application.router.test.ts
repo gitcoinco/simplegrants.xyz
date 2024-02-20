@@ -7,6 +7,7 @@ import { type AppRouter } from "~/server/api/root";
 import { db } from "~/server/__mocks__/db";
 import {
   createMockCaller,
+  mockApplicationCreated,
   mockGrantCreated,
   mockRoundCreated,
   mockSession,
@@ -25,7 +26,7 @@ describe("Application", async () => {
         "UNAUTHORIZED",
       );
     });
-    test("must be owner of grant", async () => {
+    test("must be owner of application", async () => {
       db.grant.findFirst.mockResolvedValue(mockGrantCreated);
 
       const caller = await createMockCaller({
@@ -57,6 +58,47 @@ describe("Application", async () => {
       });
 
       expect(db.application.findMany).toHaveBeenCalled();
+    });
+  });
+
+  describe("Approve Application", async () => {
+    type Input = inferProcedureInput<AppRouter["application"]["approve"]>;
+    const input: Input = {
+      applicationIds: [mockApplicationCreated.id],
+      roundId: mockRoundCreated.id,
+    };
+
+    test("must be a logged in user", async () => {
+      const caller = await createMockCaller({ user: null });
+      await expect(caller.application.approve(input)).rejects.toThrow(
+        "UNAUTHORIZED",
+      );
+    });
+    test("must be owner of application", async () => {
+      db.grant.findFirst.mockResolvedValue(mockGrantCreated);
+
+      const caller = await createMockCaller({
+        user: {
+          ...mockSession,
+          id: "another-user",
+        },
+      });
+      await expect(caller.application.approve(input)).rejects.toThrow(
+        "UNAUTHORIZED",
+      );
+    });
+    test("approves a application", async () => {
+      db.round.findFirst.mockResolvedValue(mockRoundCreated);
+      const caller = await createMockCaller({ user: mockSession });
+      await caller.application.approve(input);
+
+      expect(db.application.updateMany).toHaveBeenCalledWith({
+        where: {
+          roundId: mockRoundCreated.id,
+          id: { in: input.applicationIds },
+        },
+        data: { approvedById: mockSession.id },
+      });
     });
   });
 });

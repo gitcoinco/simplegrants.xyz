@@ -15,6 +15,8 @@ import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CheckCheck } from "lucide-react";
+import { cn } from "~/utils/cn";
+import { Badge } from "~/components/ui/badge";
 
 export function RoundApplicationsApprove({
   roundId,
@@ -23,63 +25,73 @@ export function RoundApplicationsApprove({
   roundId: string;
   applications: (Application & { grant: Grant })[];
 }) {
-  const apply = api.application.create.useMutation();
   const router = useRouter();
+  const approve = api.application.approve.useMutation({
+    onSuccess: () => router.refresh(),
+  });
 
   return (
     <div>
       <Form
-        defaultValues={{ roundId, applicationIds: [] }}
+        defaultValues={{
+          roundId,
+          applicationIds: [],
+        }}
         schema={ZApplicationApproveSchema}
         onSubmit={(values) => {
-          console.log("approve", values);
-          // apply.mutate(values, { onSuccess: () => handleClose() });
+          approve.mutate(values);
         }}
       >
         <input type="hidden" value={roundId} name="roundId" />
         <div className="mb-2 max-h-52 divide-y overflow-auto rounded border">
           {applications.map((application) => (
-            <ApplicationCheckbox
-              key={application.id}
-              value={application.id}
-              grant={application.grant}
-            />
+            <ApplicationCheckbox key={application.id} {...application} />
           ))}
         </div>
 
         <div className="flex justify-end">
-          <ApproveButton isLoading={apply.isLoading} />
+          <ApproveButton isLoading={approve.isLoading} />
         </div>
-        <pre className="text-red-600">{apply.error?.message}</pre>
+        <pre className="text-red-600">{approve.error?.message}</pre>
       </Form>
     </div>
   );
 }
 
 function ApplicationCheckbox({
+  id,
+  approvedById,
   grant,
-  value,
-}: {
-  grant: Grant;
-  value: string;
-}) {
+}: Application & { grant: Grant }) {
   const { register } = useFormContext<TApplicationApprove>();
-
   return (
-    <Label className="flex cursor-pointer items-center justify-between p-4 hover:bg-gray-100">
-      <div className="flex items-center gap-2">
-        <Checkbox value={value} {...register("applicationIds")} />
+    <Label
+      className={cn("flex items-center justify-between p-4", {
+        ["cursor-pointer hover:bg-gray-50 "]: !approvedById,
+      })}
+    >
+      <div className="flex h-12 items-center gap-2 text-lg font-medium">
+        <Checkbox
+          value={id}
+          className={cn({ ["invisible"]: approvedById })}
+          {...register("applicationIds")}
+          disabled={Boolean(approvedById)}
+        />
         {grant.name}
       </div>
-      <Button as={Link} href={`/grants/${grant.id}/review`} target="_blank">
-        Review
-      </Button>
+      {approvedById ? (
+        <Badge variant="success">Approved</Badge>
+      ) : (
+        <Button as={Link} href={`/grants/${grant.id}/review`} target="_blank">
+          Review
+        </Button>
+      )}
     </Label>
   );
 }
 function ApproveButton({ isLoading = false }) {
   const selected =
-    useFormContext<TApplicationApprove>().watch("applicationIds");
+    useFormContext<TApplicationApprove>().watch("applicationIds")?.length || 0;
 
   return (
     <Button
@@ -87,9 +99,9 @@ function ApproveButton({ isLoading = false }) {
       isLoading={isLoading}
       type="submit"
       variant="primary"
-      disabled={!selected.length || isLoading}
+      disabled={!selected || isLoading}
     >
-      Approve {selected.length} grants
+      Approve {selected} grants
     </Button>
   );
 }
