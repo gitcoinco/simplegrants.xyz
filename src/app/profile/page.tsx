@@ -20,10 +20,10 @@ export default async function ProfilePage() {
         src={profile.imageUrl!}
         alt={profile.firstName!}
       />
-      <h3 className="text-lg font-semibold">{profile.name}</h3>
+      <h3 className="text-lg font-semibold">{profile.firstName}</h3>
       <div>{profile.email}</div>
 
-      <ConnectStripe stripeAccount={profile.stripeAccount} />
+      <ConnectStripe stripeAccount={profile.privateMetadata?.stripeAccount} />
     </div>
   );
 }
