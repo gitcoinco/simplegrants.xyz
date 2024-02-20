@@ -45,16 +45,14 @@ async function verifyGrantOwnership(id: string, ctx: CreateContextOptions) {
 }
 
 export const applicationRouter = createTRPCRouter({
-  list: publicProcedure
+  list: protectedProcedure
     .input(ZApplicationListSchema)
     .query(async ({ ctx, input: { roundId } }) => {
       await verifyRoundOwnership(roundId, ctx);
 
       return ctx.db.application.findMany({
         where: { roundId },
-        include: {
-          grant: true,
-        },
+        include: { grant: true },
       });
     }),
 

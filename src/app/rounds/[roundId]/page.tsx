@@ -1,13 +1,14 @@
-import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Settings2 } from "lucide-react";
+import { currentUser } from "@clerk/nextjs/server";
 
 import { api } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
 import { RoundApply } from "../_components/round-apply";
 import { PageSection } from "~/app/(layout)/_components/page-section";
-import { Settings2 } from "lucide-react";
-import { currentUser } from "@clerk/nextjs/server";
+import { DiscoverGrants } from "~/app/grants/_components/discover-grants";
+import { RoundDetails } from "../_components/round-details";
 
 type Props = {
   params: { roundId: string };
@@ -19,7 +20,9 @@ export default async function RoundPage({ params: { roundId } }: Props) {
   if (!round) {
     return notFound();
   }
-  const { name, image, description } = round;
+
+  const approvedApplications = await api.grant.approved.query({ roundId });
+  const grants = approvedApplications.map((a) => a.grant);
   return (
     <PageSection
       title={round.name}
@@ -44,19 +47,10 @@ export default async function RoundPage({ params: { roundId } }: Props) {
         )
       }
     >
-      <div className="relative h-72">
-        <Image
-          alt={name}
-          src={image}
-          sizes="1024px"
-          fill
-          style={{
-            objectFit: "cover",
-          }}
-        />
-      </div>
+      <RoundDetails {...round} />
 
-      <div>{description}</div>
+      <h3 className="text-lg font-semibold">Grants for round</h3>
+      <DiscoverGrants grants={grants} />
     </PageSection>
   );
 }

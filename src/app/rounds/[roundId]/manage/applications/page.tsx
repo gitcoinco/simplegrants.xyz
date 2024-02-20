@@ -8,7 +8,10 @@ export default async function RoundApplicationsPage({
   params: { roundId: string };
 }) {
   const round = await api.round.get.query({ id: roundId });
-  const applications = await api.application.list.query({ roundId });
+  const applications = await api.application.list.query({
+    roundId,
+    showAll: true,
+  });
 
   if (!round) return notFound();
 

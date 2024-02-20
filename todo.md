@@ -13,7 +13,7 @@
 - [x] round manager can approve application
 - [x] grantee can view their profile
 - [ ] grantee can view their grants and applications
-- [ ] user can explore approved grants for a round
+- [x] user can explore approved grants for a round
 - [x] user can add grants to checkout
 - [ ] user can donate to grants
 - [ ] round manager can distribute round

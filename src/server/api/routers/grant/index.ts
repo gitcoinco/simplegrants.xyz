@@ -38,6 +38,15 @@ export const grantRouter = createTRPCRouter({
       }),
     ),
 
+  approved: publicProcedure
+    .input(z.object({ roundId: z.string() }))
+    .query(async ({ ctx, input: { roundId } }) => {
+      return ctx.db.application.findMany({
+        where: { roundId, approvedById: { not: null } },
+        include: { grant: true },
+      });
+    }),
+
   create: protectedProcedure
     .input(ZGrantCreateInputSchema)
     .mutation(async ({ ctx, input }) => {

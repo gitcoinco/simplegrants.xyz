@@ -12,6 +12,7 @@ export const ZApplicationApproveSchema = z.object({
 
 export const ZApplicationListSchema = z.object({
   roundId: z.string(),
+  showAll: z.boolean(),
 });
 
 export type TApplicationCreate = z.infer<typeof ZApplicationCreateSchema>;
