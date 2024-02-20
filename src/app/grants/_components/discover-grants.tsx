@@ -1,11 +1,8 @@
-import type { Grant, User } from "@prisma/client";
+import type { Grant } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 
-type RoundProps = Grant & {
-  createdBy: User;
-};
-export function DiscoverGrants({ grants }: { grants: RoundProps[] }) {
+export function DiscoverGrants({ grants }: { grants: Grant[] }) {
   return (
     <div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
@@ -17,7 +14,7 @@ export function DiscoverGrants({ grants }: { grants: RoundProps[] }) {
   );
 }
 
-function RoundCard({ id, name, description, image }: RoundProps) {
+function RoundCard({ id, name, description, image }: Grant) {
   return (
     <Link href={`/grants/${id}`} className="border">
       <div className="relative aspect-square">

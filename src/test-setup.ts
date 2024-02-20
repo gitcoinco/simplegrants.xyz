@@ -6,7 +6,7 @@ import { createCaller } from "~/server/api/root";
 import { createInnerTRPCContext } from "~/server/api/trpc";
 import { db } from "~/server/__mocks__/db";
 import { stripe } from "~/server/__mocks__/stripe";
-import { Session } from "next-auth";
+import { User } from "@clerk/nextjs/server";
 
 vi.mock("~/server/__mocks__/db", async () => {
   const actual = await vi.importActual<typeof import("~/server/__mocks__/db")>(
@@ -41,7 +41,7 @@ export const mockRoundCreated = {
   endsAt: new Date(Date.now() + ONE_DAY),
   createdAt: new Date(),
   updatedAt: new Date(),
-  createdById: mockUserCreated.id,
+  userId: mockUserCreated.id,
   distributionType: "quadratic-funding",
   stripeAccount: "acct_roundAccount",
 };
@@ -53,7 +53,7 @@ export const mockGrantCreated = {
   image: "https://image-url",
   createdAt: new Date(),
   updatedAt: new Date(),
-  createdById: mockUserCreated.id,
+  userId: mockUserCreated.id,
   roundId: mockRoundCreated.id,
   distributionType: "quadratic-funding",
   stripeAccount: "acct_grantAccount",
@@ -64,23 +64,16 @@ export const mockApplicationCreated = {
   name: "Test Application",
   createdAt: new Date(),
   updatedAt: new Date(),
-  createdById: mockUserCreated.id,
+  userId: mockUserCreated.id,
   roundId: mockRoundCreated.id,
   grantId: mockGrantCreated.id,
 };
 
-export const mockSession = {
-  user: mockUserCreated,
-  expires: String(Infinity),
-} as Session;
+export const mockSession = { id: mockUserCreated.id } as User;
 
-export async function createMockCaller({
-  session,
-}: {
-  session: Session | null;
-}) {
+export async function createMockCaller({ user }: { user: User | null }) {
   const ctx = await createInnerTRPCContext({
-    session,
+    user,
     db,
     stripe,
   });

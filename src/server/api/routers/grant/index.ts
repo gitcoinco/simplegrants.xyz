@@ -33,7 +33,6 @@ export const grantRouter = createTRPCRouter({
     // .input(z.object({ roundId: z.string() }))
     .query(({ ctx, input }) =>
       ctx.db.grant.findMany({
-        include: { createdBy: true },
         // where: { roundId: input.roundId },
         // include: { grant: true },
       }),
@@ -46,7 +45,7 @@ export const grantRouter = createTRPCRouter({
       return ctx.db.grant.create({
         data: {
           ...data,
-          createdBy: { connect: { id: ctx.session.user.id } },
+          userId: ctx.user.id,
         },
       });
     }),
@@ -54,10 +53,10 @@ export const grantRouter = createTRPCRouter({
   update: protectedProcedure
     .input(z.object({ id: z.string(), data: ZGrantUpdateInputSchema }))
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
+      const userId = ctx.user.id;
       const grant = await getGrant(input.id, ctx.db);
 
-      if (userId !== grant?.createdById) {
+      if (userId !== grant?.userId) {
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "User must be owner of grant to update",
@@ -86,7 +85,7 @@ export const grantRouter = createTRPCRouter({
           transferGroup,
           amount,
           grantId: id,
-          userId: ctx.session.user.id,
+          userId: ctx.user.id,
         })),
       });
 
@@ -130,7 +129,7 @@ export const grantRouter = createTRPCRouter({
         {
           successUrl: input.successUrl,
           metadata: {
-            userId: ctx.session.user.id,
+            userId: ctx.user.id,
             type: TransferType.grant,
           },
           transferGroup,

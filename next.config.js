@@ -23,6 +23,11 @@ const config = {
         hostname: "*.googleusercontent.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
+        port: "",
+      },
     ],
   },
 };

@@ -19,8 +19,8 @@ export async function getApplication(id: string, db: PrismaClient) {
 }
 
 async function verifyRoundOwnership(id: string, ctx: CreateContextOptions) {
-  const createdById = ctx.session?.user.id;
-  if (!(await ctx.db.round.findFirst({ where: { id, createdById } }))) {
+  const userId = ctx.user?.id;
+  if (!(await ctx.db.round.findFirst({ where: { id, userId } }))) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "Must be the owner of the resource",
@@ -37,7 +37,6 @@ export const applicationRouter = createTRPCRouter({
       return ctx.db.application.findMany({
         where: { roundId },
         include: {
-          createdBy: true,
           grant: true,
         },
       });
@@ -48,12 +47,12 @@ export const applicationRouter = createTRPCRouter({
     .mutation(async ({ ctx, input: { grantId, roundId } }) => {
       const grant = await getGrant(grantId, ctx.db);
 
-      const userId = ctx.session.user.id;
-      if (grant?.createdById !== userId) {
+      const userId = ctx.user.id;
+      if (grant?.userId !== userId) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
       return ctx.db.application.create({
-        data: { grantId, roundId, createdById: userId },
+        data: { grantId, roundId, userId: userId },
       });
     }),
 });

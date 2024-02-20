@@ -27,13 +27,7 @@ export const roundRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => getRound(input.id, ctx.db)),
 
-  list: publicProcedure.query(({ ctx }) =>
-    ctx.db.round.findMany({
-      include: {
-        createdBy: true,
-      },
-    }),
-  ),
+  list: publicProcedure.query(({ ctx }) => ctx.db.round.findMany({})),
 
   create: protectedProcedure
     .input(ZRoundCreateInputSchema)
@@ -41,7 +35,7 @@ export const roundRouter = createTRPCRouter({
       return ctx.db.round.create({
         data: {
           ...input,
-          createdBy: { connect: { id: ctx.session.user.id } },
+          userId: ctx.user.id,
         },
       });
     }),
@@ -49,10 +43,10 @@ export const roundRouter = createTRPCRouter({
   update: protectedProcedure
     .input(z.object({ id: z.string(), data: ZRoundUpdateInputSchema }))
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
+      const userId = ctx.user.id;
       const round = await getRound(input.id, ctx.db);
 
-      if (userId !== round?.createdById) {
+      if (userId !== round?.userId) {
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "User must be owner of round to update",
@@ -77,7 +71,7 @@ export const roundRouter = createTRPCRouter({
         {
           successUrl: input.successUrl,
           metadata: {
-            userId: ctx.session.user.id,
+            userId: ctx.user.id,
             type: TransferType.round,
           },
           transferGroup: createTransferGroup(input.id),

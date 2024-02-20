@@ -2,19 +2,13 @@
 
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
-import type { User, Grant } from "@prisma/client";
+import type { Grant } from "@prisma/client";
 
 import { GrantForm } from "./grant-form";
 import { useFileUpload } from "~/hooks/useFileUpload";
 import { type TGrantUpdateInputSchema } from "~/server/api/routers/grant/grant.schemas";
 
-export default function GrantFormWrapper({
-  grant,
-  user,
-}: {
-  grant?: Grant;
-  user?: User | null;
-}) {
+export default function GrantFormWrapper({ grant }: { grant?: Grant }) {
   const router = useRouter();
   const upload = useFileUpload();
 
@@ -32,7 +26,6 @@ export default function GrantFormWrapper({
 
   const defaultValues = {
     ...grant,
-    stripeAccount: grant?.stripeAccount ?? user?.stripeAccount,
   } as TGrantUpdateInputSchema;
   return (
     <div className="">

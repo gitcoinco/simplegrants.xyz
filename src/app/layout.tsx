@@ -5,10 +5,11 @@ import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import Link from "next/link";
 import { type ComponentProps } from "react";
-import { getServerAuthSession } from "~/server/auth";
 import { SignInButton } from "./(auth)/_components/sign-in";
 import { Button } from "~/components/ui/button";
 import { ShoppingCart, UserIcon } from "lucide-react";
+import { ClerkProvider } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,21 +28,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`font-sans ${inter.variable} bg-gray-100`}>
-        <TRPCReactProvider>
-          <main className="mx-auto flex min-h-screen max-w-screen-xl flex-col bg-white">
-            <Header />
-            <div className="flex-1 p-4">{children}</div>
-          </main>
-        </TRPCReactProvider>
-      </body>
-    </html>
+    <ClerkProvider signInUrl="/sign-in">
+      <html lang="en">
+        <body className={`font-sans ${inter.variable} bg-gray-100`}>
+          <TRPCReactProvider>
+            <main className="mx-auto flex min-h-screen max-w-screen-xl flex-col bg-white">
+              <Header />
+              <div className="flex-1 p-4">{children}</div>
+            </main>
+          </TRPCReactProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
 
 async function Header() {
-  const session = await getServerAuthSession();
+  const user = await currentUser();
 
   return (
     <header className="items-center justify-between p-2">
@@ -60,7 +63,7 @@ async function Header() {
           </NavLink>
         </nav>
         <div className="flex items-center gap-2">
-          {session ? (
+          {user ? (
             <>
               <Button
                 as={Link}

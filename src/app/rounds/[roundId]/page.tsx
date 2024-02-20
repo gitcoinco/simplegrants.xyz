@@ -4,10 +4,10 @@ import Link from "next/link";
 
 import { api } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
-import { getServerAuthSession } from "~/server/auth";
 import { RoundApply } from "../_components/round-apply";
 import { PageSection } from "~/app/(layout)/_components/page-section";
 import { Settings2 } from "lucide-react";
+import { currentUser } from "@clerk/nextjs/server";
 
 type Props = {
   params: { roundId: string };
@@ -15,7 +15,7 @@ type Props = {
 
 export default async function RoundPage({ params: { roundId } }: Props) {
   const round = await api.round.get.query({ id: roundId });
-  const session = await getServerAuthSession();
+  const user = await currentUser();
   if (!round) {
     return notFound();
   }
@@ -24,7 +24,7 @@ export default async function RoundPage({ params: { roundId } }: Props) {
     <PageSection
       title={round.name}
       action={
-        !session ? null : session.user.id === round.createdById ? (
+        !user ? null : user.id === round.userId ? (
           <>
             <Button
               icon={Settings2}

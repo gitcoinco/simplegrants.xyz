@@ -9,14 +9,14 @@
 
 import { type PrismaClient } from "@prisma/client";
 import { initTRPC, TRPCError } from "@trpc/server";
-import { type Session } from "next-auth";
 import type Stripe from "stripe";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
 import { stripe } from "../stripe";
+import { currentUser, type User } from "@clerk/nextjs/server";
+import { clerkClient } from "@clerk/nextjs";
 
 /**
  * 1. CONTEXT
@@ -31,19 +31,21 @@ import { stripe } from "../stripe";
  * @see https://trpc.io/docs/server/context
  */
 export interface CreateContextOptions {
-  session: Session | null;
+  user: User | null;
   db: PrismaClient;
   stripe: Stripe;
+  clerk: typeof clerkClient;
 }
 export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
   return { ...opts };
 };
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const session = await getServerAuthSession();
+  const user = await currentUser();
   return {
     db,
     stripe,
-    session,
+    user,
+    clerk: clerkClient,
   };
 };
 
@@ -100,13 +102,13 @@ export const publicProcedure = t.procedure;
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
+  if (!ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      user: ctx.user,
     },
   });
 });

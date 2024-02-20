@@ -1,12 +1,9 @@
-import type { Round, User } from "@prisma/client";
+import type { Round } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { formatDate } from "~/utils/date";
 
-type RoundProps = Round & {
-  createdBy: User;
-};
-export function DiscoverRounds({ rounds }: { rounds: RoundProps[] }) {
+export function DiscoverRounds({ rounds }: { rounds: Round[] }) {
   return (
     <div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
@@ -18,14 +15,7 @@ export function DiscoverRounds({ rounds }: { rounds: RoundProps[] }) {
   );
 }
 
-function RoundCard({
-  id,
-  name,
-  description,
-  image,
-  startsAt,
-  endsAt,
-}: RoundProps) {
+function RoundCard({ id, name, description, image, startsAt, endsAt }: Round) {
   return (
     <Link href={`/rounds/${id}`} className="border">
       <div className="relative aspect-square">

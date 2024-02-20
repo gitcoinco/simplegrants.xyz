@@ -20,7 +20,7 @@ describe("Application", async () => {
       roundId: mockRoundCreated.id,
     };
     test("must be a logged in user", async () => {
-      const caller = await createMockCaller({ session: null });
+      const caller = await createMockCaller({ user: null });
       await expect(caller.application.create(input)).rejects.toThrow(
         "UNAUTHORIZED",
       );
@@ -29,9 +29,9 @@ describe("Application", async () => {
       db.grant.findFirst.mockResolvedValue(mockGrantCreated);
 
       const caller = await createMockCaller({
-        session: {
+        user: {
           ...mockSession,
-          user: { ...mockSession.user, id: "another-user" },
+          id: "another-user",
         },
       });
       await expect(caller.application.create(input)).rejects.toThrow(
@@ -40,7 +40,7 @@ describe("Application", async () => {
     });
     test("creates a application", async () => {
       db.grant.findFirst.mockResolvedValue(mockGrantCreated);
-      const caller = await createMockCaller({ session: mockSession });
+      const caller = await createMockCaller({ user: mockSession });
       await caller.application.create(input);
 
       expect(db.application.create).toHaveBeenCalled();
@@ -48,7 +48,7 @@ describe("Application", async () => {
   });
 
   describe("Get Application", async () => {
-    const caller = await createMockCaller({ session: mockSession });
+    const caller = await createMockCaller({ user: mockSession });
 
     test("list rounds", async () => {
       db.round.findFirst.mockResolvedValue(mockRoundCreated);

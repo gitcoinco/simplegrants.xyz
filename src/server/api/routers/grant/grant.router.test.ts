@@ -23,11 +23,11 @@ describe("Grant", async () => {
       image: "https://image-url",
     };
     test("must be a logged in user", async () => {
-      const caller = await createMockCaller({ session: null });
+      const caller = await createMockCaller({ user: null });
       await expect(caller.grant.create(input)).rejects.toThrow("UNAUTHORIZED");
     });
     test("creates a grant", async () => {
-      const caller = await createMockCaller({ session: mockSession });
+      const caller = await createMockCaller({ user: mockSession });
       await caller.grant.create(input);
 
       expect(db.grant.create).toHaveBeenCalled();
@@ -35,7 +35,7 @@ describe("Grant", async () => {
   });
 
   describe("Get Grant", async () => {
-    const caller = await createMockCaller({ session: mockSession });
+    const caller = await createMockCaller({ user: mockSession });
 
     test("retrieves a grant", async () => {
       type Input = inferProcedureInput<AppRouter["grant"]["get"]>;
@@ -73,11 +73,11 @@ describe("Grant", async () => {
       },
     };
     test("must be a logged in user", async () => {
-      const caller = await createMockCaller({ session: null });
+      const caller = await createMockCaller({ user: null });
       await expect(caller.grant.update(input)).rejects.toThrow("UNAUTHORIZED");
     });
     test("update grant", async () => {
-      const caller = await createMockCaller({ session: mockSession });
+      const caller = await createMockCaller({ user: mockSession });
 
       db.grant.findFirst.mockResolvedValue(mockGrantCreated);
       await caller.grant.update(input);
@@ -85,11 +85,11 @@ describe("Grant", async () => {
       expect(db.grant.update).toHaveBeenCalled();
     });
     test("must be owner of grant", async () => {
-      const caller = await createMockCaller({ session: mockSession });
+      const caller = await createMockCaller({ user: mockSession });
 
       db.grant.findFirst.mockResolvedValue({
         ...mockGrantCreated,
-        createdById: "another-user",
+        userId: "another-user",
       });
 
       await expect(caller.grant.update(input)).rejects.toThrow(
@@ -108,11 +108,11 @@ describe("Grant", async () => {
       successUrl: "https://success",
     };
     test("must be a logged in user", async () => {
-      const caller = await createMockCaller({ session: null });
+      const caller = await createMockCaller({ user: null });
       await expect(caller.grant.donate(input)).rejects.toThrow("UNAUTHORIZED");
     });
     test("donate to grant", async () => {
-      const caller = await createMockCaller({ session: mockSession });
+      const caller = await createMockCaller({ user: mockSession });
 
       stripe.checkout.sessions.create.mockResolvedValue(StripeCheckoutResponse);
 
@@ -126,16 +126,12 @@ describe("Grant", async () => {
       expect(checkout.url).toBeDefined();
     });
     test.skip("grant owner must have a stripe account", async () => {
-      const caller = await createMockCaller({ session: mockSession });
+      const caller = await createMockCaller({ user: mockSession });
 
       stripe.checkout.sessions.create.mockResolvedValue(StripeCheckoutResponse);
 
       db.grant.findFirst.mockResolvedValue(mockGrantCreated);
       db.round.findFirst.mockResolvedValue(mockRoundCreated);
-      db.user.findFirst.mockResolvedValue({
-        ...mockUserCreated,
-        stripeAccount: null,
-      });
 
       await expect(caller.grant.donate(input)).rejects.toThrow(
         "Stripe account not set for user. Connect Stripe first.",

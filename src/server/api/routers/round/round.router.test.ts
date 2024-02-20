@@ -25,11 +25,11 @@ describe("Round", async () => {
       distributionType: "quadratic_funding",
     };
     test("must be a logged in user", async () => {
-      const caller = await createMockCaller({ session: null });
+      const caller = await createMockCaller({ user: null });
       await expect(caller.round.create(input)).rejects.toThrow("UNAUTHORIZED");
     });
     test("creates a round", async () => {
-      const caller = await createMockCaller({ session: mockSession });
+      const caller = await createMockCaller({ user: mockSession });
       await caller.round.create(input);
 
       expect(db.round.create).toHaveBeenCalled();
@@ -37,7 +37,7 @@ describe("Round", async () => {
   });
 
   describe("Get Round", async () => {
-    const caller = await createMockCaller({ session: mockSession });
+    const caller = await createMockCaller({ user: mockSession });
 
     test("retrieves a round", async () => {
       type Input = inferProcedureInput<AppRouter["round"]["get"]>;
@@ -58,11 +58,7 @@ describe("Round", async () => {
     test("list rounds", async () => {
       await caller.round.list();
 
-      expect(db.round.findMany).toHaveBeenCalledWith({
-        include: {
-          createdBy: true,
-        },
-      });
+      expect(db.round.findMany).toHaveBeenCalledWith({});
     });
   });
 
@@ -75,11 +71,11 @@ describe("Round", async () => {
       },
     };
     test("must be a logged in user", async () => {
-      const caller = await createMockCaller({ session: null });
+      const caller = await createMockCaller({ user: null });
       await expect(caller.round.update(input)).rejects.toThrow("UNAUTHORIZED");
     });
     test("update round", async () => {
-      const caller = await createMockCaller({ session: mockSession });
+      const caller = await createMockCaller({ user: mockSession });
 
       db.round.findFirst.mockResolvedValue(mockRoundCreated);
       await caller.round.update(input);
@@ -87,11 +83,11 @@ describe("Round", async () => {
       expect(db.round.update).toHaveBeenCalled();
     });
     test("must be owner of round", async () => {
-      const caller = await createMockCaller({ session: mockSession });
+      const caller = await createMockCaller({ user: mockSession });
 
       db.round.findFirst.mockResolvedValue({
         ...mockRoundCreated,
-        createdById: "another-user",
+        userId: "another-user",
       });
 
       await expect(caller.round.update(input)).rejects.toThrow(
@@ -108,15 +104,14 @@ describe("Round", async () => {
       successUrl: "https://success",
     };
     test("must be a logged in user", async () => {
-      const caller = await createMockCaller({ session: null });
+      const caller = await createMockCaller({ user: null });
       await expect(caller.round.fund(input)).rejects.toThrow("UNAUTHORIZED");
     });
     test("fund round", async () => {
-      const caller = await createMockCaller({ session: mockSession });
+      const caller = await createMockCaller({ user: mockSession });
 
       stripe.checkout.sessions.create.mockResolvedValue(StripeCheckoutResponse);
       db.round.findFirst.mockResolvedValue(mockRoundCreated);
-      db.user.findFirst.mockResolvedValue(mockUserCreated);
 
       const checkout = await caller.round.fund(input);
 
@@ -124,14 +119,10 @@ describe("Round", async () => {
       expect(checkout.url).toBeDefined();
     });
     test.skip("round owner must have a stripe account", async () => {
-      const caller = await createMockCaller({ session: mockSession });
+      const caller = await createMockCaller({ user: mockSession });
 
       stripe.checkout.sessions.create.mockResolvedValue(StripeCheckoutResponse);
       db.round.findFirst.mockResolvedValue(mockRoundCreated);
-      db.user.findFirst.mockResolvedValue({
-        ...mockUserCreated,
-        stripeAccount: null,
-      });
 
       await expect(caller.round.fund(input)).rejects.toThrow(
         "Stripe account not set for user. Connect Stripe first.",

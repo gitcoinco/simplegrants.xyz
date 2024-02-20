@@ -22,12 +22,10 @@ model Round {
     description      String?
     startsAt         DateTime
     endsAt           DateTime
-    createdById      String
+    userId           String
     distributionType String
     stripeAccount    String?
 
-    createdBy    User          @relation(fields: [createdById], references: [id])
-    members      Membership[]
     applications Application[]
 
     createdAt DateTime @default(now())
@@ -41,37 +39,16 @@ model Grant {
     name          String
     description   String?
     image         String
-    createdById   String
+    userId        String
     stripeAccount String?
 
-    createdBy    User          @relation(fields: [createdById], references: [id])
     applications Application[]
-    members      Membership[]
 
     createdAt    DateTime       @default(now())
     updatedAt    DateTime       @updatedAt
     contribution Contribution[]
 
     @@index([name])
-}
-
-enum MembershipRole {
-    owner
-    member
-}
-
-model Membership {
-    id      String         @id @default(cuid())
-    role    MembershipRole @default(member)
-    grantId String?
-    roundId String?
-    userId  String?
-
-    grant Grant? @relation(fields: [grantId], references: [id])
-    round Round? @relation(fields: [roundId], references: [id])
-    user  User?  @relation(fields: [userId], references: [id])
-
-    @@unique([userId, grantId, roundId])
 }
 
 enum ContributionStatus {
@@ -88,7 +65,6 @@ model Contribution {
     status        ContributionStatus @default(pending)
 
     grant Grant @relation(fields: [grantId], references: [id])
-    user  User  @relation(fields: [userId], references: [id])
 }
 
 model Application {
@@ -96,69 +72,13 @@ model Application {
     grantId      String
     roundId      String
     approvedById String?
-    createdById  String
+    userId       String
 
-    createdBy  User  @relation(fields: [createdById], references: [id], name: "createdBy")
-    approvedBy User? @relation(fields: [approvedById], references: [id], name: "approvedBy")
-    grant      Grant @relation(fields: [grantId], references: [id])
-    round      Round @relation(fields: [roundId], references: [id])
+    grant Grant @relation(fields: [grantId], references: [id])
+    round Round @relation(fields: [roundId], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@unique([grantId, roundId])
-}
-
-// Necessary for Next auth
-model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@unique([provider, providerAccountId])
-}
-
-model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    stripeAccount String?
-
-    accounts Account[]
-    sessions Session[]
-
-    memberships  Membership[]
-    rounds       Round[]
-    grants       Grant[]
-    applications Application[]  @relation(name: "createdBy")
-    approvals    Application[]  @relation(name: "approvedBy")
-    contribution Contribution[]
-}
-
-model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
-
-    @@unique([identifier, token])
 }

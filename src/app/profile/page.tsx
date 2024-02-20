@@ -5,7 +5,7 @@ import { ConnectStripe } from "./_components/connect-stripe";
 
 export default async function ProfilePage() {
   const profile = await api.user.get.query();
-
+  console.log(profile);
   if (!profile) {
     return notFound();
   }
@@ -17,8 +17,8 @@ export default async function ProfilePage() {
         width={96}
         height={96}
         className="rounded-full"
-        src={profile.image!}
-        alt={profile.name!}
+        src={profile.imageUrl!}
+        alt={profile.firstName!}
       />
       <h3 className="text-lg font-semibold">{profile.name}</h3>
       <div>{profile.email}</div>
