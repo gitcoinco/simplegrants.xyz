@@ -1,4 +1,5 @@
 import { currentUser } from "@clerk/nextjs/server";
+import { Edit, ListTodo } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageSection } from "~/app/(layout)/_components/page-section";
@@ -23,10 +24,14 @@ export default async function RoundManageLayout({
       backLink={roundUrl}
       action={
         <nav className="flex gap-1">
-          <Button as={Link} href={`${roundUrl}/manage/edit`}>
-            Edit
+          <Button icon={Edit} as={Link} href={`${roundUrl}/manage/edit`}>
+            Edit round
           </Button>
-          <Button as={Link} href={`${roundUrl}/manage/applications`}>
+          <Button
+            as={Link}
+            icon={ListTodo}
+            href={`${roundUrl}/manage/applications`}
+          >
             Applications
           </Button>
         </nav>

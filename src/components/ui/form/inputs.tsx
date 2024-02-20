@@ -32,9 +32,12 @@ export const CheckboxInput = createComponent(
   }),
 );
 
-export function Checkbox(props: ComponentPropsWithRef<typeof CheckboxInput>) {
-  return <CheckboxInput type="checkbox" {...props} />;
-}
+export const Checkbox = forwardRef(function RadioComponent(
+  props: ComponentPropsWithRef<typeof RadioInput>,
+  ref,
+) {
+  return <CheckboxInput type="checkbox" ref={ref} {...props} />;
+});
 
 export const RadioInput = createComponent(
   "input",

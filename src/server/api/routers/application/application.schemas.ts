@@ -5,8 +5,14 @@ export const ZApplicationCreateSchema = z.object({
   roundId: z.string(),
 });
 
+export const ZApplicationApproveSchema = z.object({
+  applicationIds: z.array(z.string()),
+  roundId: z.string(),
+});
+
 export const ZApplicationListSchema = z.object({
   roundId: z.string(),
 });
 
 export type TApplicationCreate = z.infer<typeof ZApplicationCreateSchema>;
+export type TApplicationApprove = z.infer<typeof ZApplicationApproveSchema>;

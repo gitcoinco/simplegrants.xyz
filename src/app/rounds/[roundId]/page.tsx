@@ -28,7 +28,6 @@ export default async function RoundPage({ params: { roundId } }: Props) {
           <>
             <Button
               icon={Settings2}
-              variant="primary"
               as={Link}
               href={`/rounds/${roundId}/manage`}
             >
@@ -37,11 +36,7 @@ export default async function RoundPage({ params: { roundId } }: Props) {
           </>
         ) : (
           <>
-            <Button
-              variant="primary"
-              as={Link}
-              href={`/rounds/${roundId}?action=apply`}
-            >
+            <Button as={Link} href={`/rounds/${roundId}?action=apply`}>
               Apply to Round
             </Button>
             <RoundApply roundId={roundId} />

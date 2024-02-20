@@ -21,7 +21,6 @@ function AddToCart({ grantId = "" }) {
   return (
     <Button
       icon={ShoppingCart}
-      variant="primary"
       onClick={() => {
         cart.set(grantId);
         router.replace("/checkout");

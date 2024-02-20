@@ -1,5 +1,6 @@
 import { api } from "~/trpc/server";
 import { notFound } from "next/navigation";
+import { RoundApplicationsApprove } from "~/app/rounds/_components/round-applications-approve";
 
 export default async function RoundApplicationsPage({
   params: { roundId },
@@ -12,10 +13,6 @@ export default async function RoundApplicationsPage({
   if (!round) return notFound();
 
   return (
-    <div>
-      {applications.map((application) => (
-        <div key={application.id}>{application.grant.name}</div>
-      ))}
-    </div>
+    <RoundApplicationsApprove roundId={roundId} applications={applications} />
   );
 }

@@ -9,7 +9,7 @@
 - [x] grantee can create grant
 - [x] grantee can edit grant
 - [x] grantee can apply to round
-- [ ] round manager can list applications
+- [x] round manager can list applications
 - [ ] round manager can approve application
 - [x] grantee can view their profile
 - [ ] grantee can view their grants and applications

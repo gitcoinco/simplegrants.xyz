@@ -1,13 +1,13 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { Edit } from "lucide-react";
 
 import { api } from "~/trpc/server";
 
 import { Button } from "~/components/ui/button";
 import { AddToCartButton } from "~/app/checkout/_components/add-to-cart";
-import { Edit } from "lucide-react";
 import { PageSection } from "~/app/(layout)/_components/page-section";
+import { GrantDetails } from "../_components/grant-details";
 
 type Props = {
   params: { grantId: string };
@@ -18,36 +18,19 @@ export default async function GrantPage({ params }: Props) {
   if (!grant) {
     return notFound();
   }
-  const { name, image, description, stripeAccount } = grant;
   return (
     <PageSection
       title={grant.name}
       action={
         <div className="flex gap-2">
-          <Button
-            icon={Edit}
-            variant="primary"
-            as={Link}
-            href={`/grants/${params.grantId}/edit`}
-          >
+          <Button icon={Edit} as={Link} href={`/grants/${params.grantId}/edit`}>
             Edit grant
           </Button>
           <AddToCartButton grantId={grant.id} />
         </div>
       }
     >
-      <div className="relative h-72">
-        <Image
-          alt={name}
-          src={image}
-          sizes="1024px"
-          fill
-          style={{ objectFit: "cover" }}
-        />
-      </div>
-
-      <div>{description}</div>
-      <div>{stripeAccount}</div>
+      <GrantDetails {...grant} />
     </PageSection>
   );
 }
