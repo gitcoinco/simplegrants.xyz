@@ -7,6 +7,7 @@ import { createInnerTRPCContext } from "~/server/api/trpc";
 import { db } from "~/server/__mocks__/db";
 import { stripe } from "~/server/__mocks__/stripe";
 import { User } from "@clerk/nextjs/server";
+import { clerkClient } from "@clerk/nextjs";
 
 vi.mock("~/server/__mocks__/db", async () => {
   const actual = await vi.importActual<typeof import("~/server/__mocks__/db")>(
@@ -19,6 +20,13 @@ vi.mock("~/server/__mocks__/stripe", async () => {
   const actual = await vi.importActual<
     typeof import("~/server/__mocks__/stripe")
   >("~/server/__mocks__/stripe");
+  return { ...actual };
+});
+
+vi.mock("~/server/__mocks__/clerk", async () => {
+  const actual = await vi.importActual<
+    typeof import("~/server/__mocks__/clerk")
+  >("~/server/__mocks__/clerk");
   return { ...actual };
 });
 
@@ -76,6 +84,7 @@ export async function createMockCaller({ user }: { user: User | null }) {
     user,
     db,
     stripe,
+    clerk: clerkClient,
   });
   return createCaller(ctx);
 }
