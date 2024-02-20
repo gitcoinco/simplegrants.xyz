@@ -50,8 +50,14 @@ async function Header() {
           <div className="h-8 w-8 rounded-full border-[16px] border-gray-900 transition-all hover:border-4 hover:bg-transparent" />
         </Link>
         <nav className="flex gap-2">
-          <NavLink href={"/rounds"}>Rounds</NavLink>
-          <NavLink href={"/grants"}>Grants</NavLink>
+          <NavLink href={"/rounds"}>
+            <span className="hidden pr-1 sm:inline">Discover </span>
+            Rounds
+          </NavLink>
+          <NavLink href={"/grants"}>
+            <span className="hidden pr-1 sm:inline">Discover </span>
+            Grants
+          </NavLink>
         </nav>
         <div className="flex items-center gap-2">
           {session ? (
