@@ -17,11 +17,11 @@ export default async function ProfilePage() {
         width={96}
         height={96}
         className="rounded-full"
-        src={profile.imageUrl!}
+        src={profile.imageUrl}
         alt={profile.firstName!}
       />
       <h3 className="text-lg font-semibold">{profile.firstName}</h3>
-      <div>{profile.email}</div>
+      <div>{profile.emailAddresses[0]?.emailAddress}</div>
 
       <ConnectStripe stripeAccount={profile.privateMetadata?.stripeAccount} />
     </div>

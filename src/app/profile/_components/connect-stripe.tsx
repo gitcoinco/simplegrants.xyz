@@ -15,11 +15,7 @@ const stripeParams = {
 
 const connectStripeLink = `https://connect.stripe.com/oauth/authorize?${new URLSearchParams(stripeParams).toString()}`;
 
-export function ConnectStripe({
-  stripeAccount,
-}: {
-  stripeAccount?: string | null;
-}) {
+export function ConnectStripe({ stripeAccount }: { stripeAccount?: unknown }) {
   const router = useRouter();
 
   const disconnect = api.stripe.disconnectAccount.useMutation({
@@ -29,7 +25,7 @@ export function ConnectStripe({
   if (stripeAccount) {
     return (
       <div className="flex items-center gap-2">
-        <pre>{stripeAccount}</pre>
+        <pre>{String(stripeAccount)}</pre>
         <Button
           icon={X}
           variant="ghost"
