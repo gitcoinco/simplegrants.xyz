@@ -14,7 +14,7 @@ export function DiscoverGrants({ grants }: { grants: Grant[] }) {
   );
 }
 
-function RoundCard({ id, name, description, image }: Grant) {
+function RoundCard({ id, name, image }: Grant) {
   return (
     <Link href={`/grants/${id}`} className="border">
       <div className="relative aspect-square">
@@ -30,7 +30,6 @@ function RoundCard({ id, name, description, image }: Grant) {
       </div>
       <div className="p-2">
         <h3 className="text-xl font-semibold">{name}</h3>
-        <div>{description}</div>
       </div>
     </Link>
   );

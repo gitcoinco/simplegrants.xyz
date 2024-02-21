@@ -1,10 +1,11 @@
 import type { Grant } from "@prisma/client";
 import Image from "next/image";
+import { Markdown } from "~/components/ui/markdown";
 
 export function GrantDetails({ name, image, description }: Grant) {
   return (
     <div>
-      <div className="relative h-72">
+      <div className="relative mb-6 h-72">
         <Image
           alt={name}
           src={image}
@@ -14,7 +15,7 @@ export function GrantDetails({ name, image, description }: Grant) {
         />
       </div>
 
-      <div>{description}</div>
+      <Markdown>{description}</Markdown>
     </div>
   );
 }

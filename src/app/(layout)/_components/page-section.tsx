@@ -26,7 +26,7 @@ export function PageSection({
               href={backLink}
             />
           )}
-          <h1 className="text-2xl font-bold">{title}</h1>
+          <h1 className="text-2xl font-bold sm:text-3xl ">{title}</h1>
         </div>
         {action}
       </div>
