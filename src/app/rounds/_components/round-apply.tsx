@@ -1,6 +1,5 @@
 "use client";
 
-import type { Grant } from "@prisma/client";
 import { Drawer } from "vaul";
 
 import { Radio } from "~/components/ui/form/inputs";

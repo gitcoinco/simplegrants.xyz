@@ -15,7 +15,7 @@ export function DiscoverRounds({ rounds }: { rounds: Round[] }) {
   );
 }
 
-function RoundCard({ id, name, description, image, startsAt, endsAt }: Round) {
+function RoundCard({ id, name, image, startsAt, endsAt }: Round) {
   return (
     <Link href={`/rounds/${id}`} className="border">
       <div className="relative aspect-square">
@@ -30,8 +30,7 @@ function RoundCard({ id, name, description, image, startsAt, endsAt }: Round) {
         />
       </div>
       <div className="p-2">
-        <h3 className="text-xl font-semibold">{name}</h3>
-        <div>{description}</div>
+        <h3 className="truncate text-xl font-semibold">{name}</h3>
         <div>
           {formatDate(startsAt)} - {formatDate(endsAt)}
         </div>

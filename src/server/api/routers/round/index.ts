@@ -28,6 +28,35 @@ export const roundRouter = createTRPCRouter({
     .query(({ ctx, input }) => getRound(input.id, ctx.db)),
 
   list: publicProcedure.query(({ ctx }) => ctx.db.round.findMany({})),
+  balance: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const round = await getRound(input.id, ctx.db);
+      const stripeAccount = round?.stripeAccount;
+      if (!stripeAccount) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Round must have a connected Stripe account",
+        });
+      }
+
+      return ctx.stripe.charges
+        .list(
+          {
+            limit: 100,
+            // List all transfers to the round and sum them
+            transfer_group: createTransferGroup(input.id),
+          },
+          { stripeAccount },
+        )
+        .then((r) => {
+          console.log(r.data[0]);
+          const currency = r.data?.[0]?.currency;
+          const amount = r.data.reduce((sum, x) => sum + x.amount, 0);
+          return { amount, currency };
+        });
+    }),
+  // .then(sumTransfers)),
 
   create: protectedProcedure
     .input(ZRoundCreateInputSchema)
