@@ -8,9 +8,9 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import {
-  ZFundInputSchema,
   ZRoundCreateInputSchema,
   ZRoundUpdateInputSchema,
+  ZRoundFundInputSchema,
 } from "./round.schemas";
 import {
   TransferType,
@@ -89,7 +89,7 @@ export const roundRouter = createTRPCRouter({
     }),
 
   fund: protectedProcedure
-    .input(ZFundInputSchema)
+    .input(ZRoundFundInputSchema)
     .mutation(async ({ ctx, input }) => {
       const round = await getRound(input.id, ctx.db);
       if (!round) {
@@ -115,7 +115,7 @@ export const roundRouter = createTRPCRouter({
             {
               quantity: 1,
               price_data: {
-                currency: "usd",
+                currency: input.currency,
                 product_data: {
                   name: String(round.name),
                   description: String(round.description),

@@ -33,6 +33,7 @@ export function RoundApplicationsApprove({
   return (
     <div>
       <Form
+        className="mx-auto flex max-w-screen-sm flex-col gap-2"
         defaultValues={{
           roundId,
           applicationIds: [],
@@ -42,6 +43,7 @@ export function RoundApplicationsApprove({
           approve.mutate(values);
         }}
       >
+        <h3 className="text-xl font-semibold">Approve Grants</h3>
         <input type="hidden" value={roundId} name="roundId" />
         <div className="mb-2 max-h-52 divide-y overflow-auto rounded border">
           {applications.map((application) => (

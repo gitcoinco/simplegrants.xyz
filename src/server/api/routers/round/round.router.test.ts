@@ -96,6 +96,7 @@ describe("Round", async () => {
     const input: Input = {
       id: mockRoundCreated.id,
       amount: 100,
+      currency: "usd",
       successUrl: "https://success",
     };
     test("must be a logged in user", async () => {

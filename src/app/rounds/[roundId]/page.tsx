@@ -49,7 +49,7 @@ export default async function RoundPage({ params: { roundId } }: Props) {
     >
       <RoundDetails {...round} />
 
-      <h3 className="text-lg font-semibold">Grants for round</h3>
+      <h3 className="mb-2 text-xl font-semibold">Applied grants</h3>
       <DiscoverGrants grants={grants} />
     </PageSection>
   );

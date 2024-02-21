@@ -29,7 +29,7 @@ function RoundCard({ id, name, image }: Grant) {
         />
       </div>
       <div className="p-2">
-        <h3 className="text-xl font-semibold">{name}</h3>
+        <h3 className="truncate text-xl font-semibold">{name}</h3>
       </div>
     </Link>
   );

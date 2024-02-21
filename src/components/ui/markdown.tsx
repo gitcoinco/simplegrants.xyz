@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 
 export function Markdown(props: ComponentProps<typeof ReactMarkdown>) {
   return (
-    <div className="prose prose-lg">
+    <div className="prose md:prose-lg">
       <ReactMarkdown {...props} />
     </div>
   );

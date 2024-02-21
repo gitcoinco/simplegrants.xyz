@@ -1,23 +1,43 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
+import { useRouter } from "next/navigation";
+import { Form } from "~/components/ui/form";
+import { Fieldset } from "~/components/ui/form/fieldset";
+import { Input } from "~/components/ui/form/inputs";
+import { Button } from "~/components/ui/button";
+import { ZRoundFundInputSchema } from "~/server/api/routers/round/round.schemas";
 
-export function RoundFund({ id = "" }) {
+export function RoundFundForm({ roundId }: { roundId: string }) {
   const router = useRouter();
   const fund = api.round.fund.useMutation({
     onSuccess: ({ url }) => url && router.push(url),
   });
   return (
-    <Button
-      variant="primary"
-      isLoading={fund.isLoading}
-      className="w-full"
-      onClick={() =>
-        fund.mutate({ id, amount: 10_000, successUrl: `/rounds/${id}` })
-      }
-    >
-      Fund pool
-    </Button>
+    <div>
+      <Form
+        className="mx-auto flex max-w-screen-sm flex-col gap-2"
+        defaultValues={{
+          id: roundId,
+          amount: 10_000,
+          currency: "usd",
+          successUrl: `/rounds/${roundId}`,
+        }}
+        schema={ZRoundFundInputSchema}
+        onSubmit={(values) => {
+          fund.mutate(values);
+        }}
+      >
+        <h3 className="text-xl font-semibold">Fund Round</h3>
+        <Fieldset name="amount" label="Amount">
+          <Input type="number" />
+        </Fieldset>
+        <Fieldset name="currency" label="Currency">
+          <Input />
+        </Fieldset>
+        <Button isLoading={fund.isLoading} variant="primary" type="submit">
+          Fund round
+        </Button>
+      </Form>
+    </div>
   );
 }

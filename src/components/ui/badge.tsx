@@ -4,7 +4,7 @@ import { createComponent } from ".";
 export const Badge = createComponent(
   "div",
   tv({
-    base: "inline-flex items-center rounded font-semibold text-gray-500 text-sm",
+    base: "inline-flex gap-1 items-center whitespace-nowrap rounded font-semibold text-gray-500 text-sm",
     variants: {
       variant: {
         default: "bg-gray-100",

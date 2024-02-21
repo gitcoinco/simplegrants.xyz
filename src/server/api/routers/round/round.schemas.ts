@@ -34,9 +34,10 @@ export const ZRoundCreateInputSchema = Round.refine(
 
 export const ZRoundUpdateInputSchema = Round.partial();
 
-export const ZFundInputSchema = z.object({
+export const ZRoundFundInputSchema = z.object({
   id: z.string(),
   amount: z.number(),
+  currency: z.string().length(3),
   successUrl: z.string(),
 });
 

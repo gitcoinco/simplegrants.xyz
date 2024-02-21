@@ -28,11 +28,12 @@ export function RoundForm({
 }: Props) {
   return (
     <Form
-      className="flex max-w-screen-sm flex-col gap-2"
+      className="mx-auto flex max-w-screen-sm flex-col gap-2"
       schema={ZRoundCreateInputSchema}
       onSubmit={onSubmit}
       defaultValues={defaultValues}
     >
+      <h3 className="text-xl font-semibold">Edit Round</h3>
       <Fieldset label="Name" name="name">
         <Input />
       </Fieldset>
