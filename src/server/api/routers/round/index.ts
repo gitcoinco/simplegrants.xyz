@@ -66,6 +66,12 @@ export const roundRouter = createTRPCRouter({
       if (!round) {
         throw new TRPCError({ code: "NOT_FOUND", message: "Round not found" });
       }
+      if (!round.stripeAccount) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Round must have a connected Stripe account",
+        });
+      }
 
       return createCheckout(
         {
@@ -75,6 +81,7 @@ export const roundRouter = createTRPCRouter({
             type: TransferType.round,
           },
           transferGroup: createTransferGroup(input.id),
+          stripeAccount: round.stripeAccount,
           lineItems: [
             {
               quantity: 1,
@@ -84,7 +91,7 @@ export const roundRouter = createTRPCRouter({
                   name: String(round.name),
                   description: String(round.description),
                 },
-                unit_amount: input.amount,
+                unit_amount: input.amount * 100,
               },
             },
           ],

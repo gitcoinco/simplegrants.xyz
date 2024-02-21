@@ -37,7 +37,7 @@ export const ZRoundUpdateInputSchema = Round.partial();
 export const ZFundInputSchema = z.object({
   id: z.string(),
   amount: z.number(),
-  successUrl: z.string().url(),
+  successUrl: z.string(),
 });
 
 export type TRoundCreateInputSchema = z.infer<typeof ZRoundCreateInputSchema>;

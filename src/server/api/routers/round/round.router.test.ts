@@ -6,12 +6,7 @@ import { describe, expect, test } from "vitest";
 import { type AppRouter } from "~/server/api/root";
 import { db } from "~/server/__mocks__/db";
 import { StripeCheckoutResponse, stripe } from "~/server/__mocks__/stripe";
-import {
-  createMockCaller,
-  mockRoundCreated,
-  mockSession,
-  mockUserCreated,
-} from "~/test-setup";
+import { createMockCaller, mockRoundCreated, mockSession } from "~/test-setup";
 
 describe("Round", async () => {
   describe("Create Round", () => {
@@ -107,6 +102,19 @@ describe("Round", async () => {
       const caller = await createMockCaller({ user: null });
       await expect(caller.round.fund(input)).rejects.toThrow("UNAUTHORIZED");
     });
+    test("round must have a stripe account", async () => {
+      const caller = await createMockCaller({ user: mockSession });
+
+      stripe.checkout.sessions.create.mockResolvedValue(StripeCheckoutResponse);
+      db.round.findFirst.mockResolvedValue({
+        ...mockRoundCreated,
+        stripeAccount: null,
+      });
+
+      await expect(caller.round.fund(input)).rejects.toThrow(
+        "Round must have a connected Stripe account",
+      );
+    });
     test("fund round", async () => {
       const caller = await createMockCaller({ user: mockSession });
 
@@ -117,16 +125,6 @@ describe("Round", async () => {
 
       expect(stripe.checkout.sessions.create).toHaveBeenCalled();
       expect(checkout.url).toBeDefined();
-    });
-    test.skip("round owner must have a stripe account", async () => {
-      const caller = await createMockCaller({ user: mockSession });
-
-      stripe.checkout.sessions.create.mockResolvedValue(StripeCheckoutResponse);
-      db.round.findFirst.mockResolvedValue(mockRoundCreated);
-
-      await expect(caller.round.fund(input)).rejects.toThrow(
-        "Stripe account not set for user. Connect Stripe first.",
-      );
     });
   });
 });

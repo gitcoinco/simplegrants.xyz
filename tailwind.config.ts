@@ -15,6 +15,7 @@ export default {
 
         primary: colors.zinc,
         gray: colors.zinc,
+        green: colors.emerald,
       },
     },
   },

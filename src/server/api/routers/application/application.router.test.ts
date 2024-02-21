@@ -51,7 +51,7 @@ describe("Application", async () => {
   describe("Get Application", async () => {
     const caller = await createMockCaller({ user: mockSession });
 
-    test("list rounds", async () => {
+    test("list applications", async () => {
       db.round.findFirst.mockResolvedValue(mockRoundCreated);
       await caller.application.list({
         roundId: mockRoundCreated.id,

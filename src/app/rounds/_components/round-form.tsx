@@ -60,6 +60,10 @@ export function RoundForm({
         </Fieldset>
       </div>
 
+      <Fieldset label="Stripe account" name="stripeAccount">
+        <Input />
+      </Fieldset>
+
       <div className="flex justify-end">
         <Button variant="primary" isLoading={isLoading} type="submit">
           Save round
