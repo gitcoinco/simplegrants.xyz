@@ -5,7 +5,7 @@
 - [x] round manager can create round
 - [x] round manager can edit round (only round manager)
 - [x] round manager can fund round
-- [ ] users can see how much a round is funded
+- [x] users can see how much a round is funded
 - [x] user can explore rounds
 - [x] grantee can create grant
 - [x] grantee can edit grant
