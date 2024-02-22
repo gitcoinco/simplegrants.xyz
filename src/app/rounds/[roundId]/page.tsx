@@ -27,7 +27,7 @@ export default async function RoundPage({ params: { roundId } }: Props) {
     <PageSection
       title={round.name}
       action={
-        <>
+        <div className="flex gap-1">
           {!user
             ? null
             : user.id === round.userId && (
@@ -46,7 +46,7 @@ export default async function RoundPage({ params: { roundId } }: Props) {
             Apply to Round
           </Button>
           <RoundApply roundId={roundId} />
-        </>
+        </div>
       }
     >
       <RoundDetails {...round} />
