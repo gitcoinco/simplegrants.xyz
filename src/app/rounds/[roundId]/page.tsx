@@ -27,24 +27,26 @@ export default async function RoundPage({ params: { roundId } }: Props) {
     <PageSection
       title={round.name}
       action={
-        !user ? null : user.id === round.userId ? (
-          <>
-            <Button
-              icon={Settings2}
-              as={Link}
-              href={`/rounds/${roundId}/manage`}
-            >
-              Manage round
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button as={Link} href={`/rounds/${roundId}?action=apply`}>
-              Apply to Round
-            </Button>
-            <RoundApply roundId={roundId} />
-          </>
-        )
+        <>
+          {!user
+            ? null
+            : user.id === round.userId && (
+                <>
+                  <Button
+                    icon={Settings2}
+                    as={Link}
+                    href={`/rounds/${roundId}/manage`}
+                  >
+                    Manage round
+                  </Button>
+                </>
+              )}
+
+          <Button as={Link} href={`/rounds/${roundId}?action=apply`}>
+            Apply to Round
+          </Button>
+          <RoundApply roundId={roundId} />
+        </>
       }
     >
       <RoundDetails {...round} />

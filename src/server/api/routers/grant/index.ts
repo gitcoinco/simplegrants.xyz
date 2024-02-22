@@ -19,6 +19,7 @@ import {
   createTransferGroup,
   getCustomerFee,
 } from "~/server/stripe";
+import { verifyGrantOwnership } from "../application";
 
 export async function getGrant(id: string, db: PrismaClient) {
   return db.grant.findFirst({ where: { id } });
@@ -38,6 +39,12 @@ export const grantRouter = createTRPCRouter({
       }),
     ),
 
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await verifyGrantOwnership(input.id, ctx);
+      return ctx.db.grant.delete({ where: { id: input.id } });
+    }),
   approved: publicProcedure
     .input(z.object({ roundId: z.string() }))
     .query(async ({ ctx, input: { roundId } }) => {

@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { Stripe } from "stripe";
-import { getUrl } from "~/trpc/shared";
+import { getBaseUrl, getUrl } from "~/trpc/shared";
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -18,7 +18,7 @@ export async function createCheckout(
   return stripe.checkout.sessions.create(
     {
       mode: "payment",
-      success_url: `${getUrl()}/${successUrl}?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${getBaseUrl()}/${successUrl}?session_id={CHECKOUT_SESSION_ID}`,
       payment_method_types: ["card"],
       payment_intent_data: {
         // With this group we can query round balance and handle payouts

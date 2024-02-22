@@ -17,6 +17,7 @@ import {
   createCheckout,
   createTransferGroup,
 } from "~/server/stripe";
+import { verifyRoundOwnership } from "../application";
 
 export async function getRound(id: string, db: PrismaClient) {
   return db.round.findFirst({ where: { id } });
@@ -61,12 +62,14 @@ export const roundRouter = createTRPCRouter({
   create: protectedProcedure
     .input(ZRoundCreateInputSchema)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.round.create({
-        data: {
-          ...input,
-          userId: ctx.user.id,
-        },
-      });
+      return ctx.db.round.create({ data: { ...input, userId: ctx.user.id } });
+    }),
+
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await verifyRoundOwnership(input.id, ctx);
+      return ctx.db.round.delete({ where: { id: input.id } });
     }),
 
   update: protectedProcedure

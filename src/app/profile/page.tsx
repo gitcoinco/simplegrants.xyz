@@ -2,6 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { api } from "~/trpc/server";
 import { ConnectStripe } from "./_components/connect-stripe";
+import { SignOutButton } from "../(auth)/_components/sign-out";
 
 export default async function ProfilePage() {
   const profile = await api.user.get.query();
@@ -24,6 +25,7 @@ export default async function ProfilePage() {
       <div>{profile.emailAddresses[0]?.emailAddress}</div>
 
       <ConnectStripe stripeAccount={profile.privateMetadata?.stripeAccount} />
+      <SignOutButton />
     </div>
   );
 }

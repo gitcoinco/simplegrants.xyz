@@ -20,7 +20,10 @@ export async function getApplication(id: string, db: PrismaClient) {
   return db.application.findFirst({ where: { id } });
 }
 
-async function verifyRoundOwnership(id: string, ctx: CreateContextOptions) {
+export async function verifyRoundOwnership(
+  id: string,
+  ctx: CreateContextOptions,
+) {
   const userId = ctx.user?.id;
   const round = await getRound(id, ctx.db);
 
@@ -32,7 +35,10 @@ async function verifyRoundOwnership(id: string, ctx: CreateContextOptions) {
   }
 }
 
-async function verifyGrantOwnership(id: string, ctx: CreateContextOptions) {
+export async function verifyGrantOwnership(
+  id: string,
+  ctx: CreateContextOptions,
+) {
   const userId = ctx.user?.id;
   const grant = await getGrant(id, ctx.db);
 

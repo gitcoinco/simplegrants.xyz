@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Edit } from "lucide-react";
+import { Edit, Settings2 } from "lucide-react";
 
 import { api } from "~/trpc/server";
 
@@ -14,8 +14,8 @@ type Props = {
   params: { grantId: string };
 };
 
-export default async function GrantPage({ params }: Props) {
-  const grant = await api.grant.get.query({ id: params.grantId });
+export default async function GrantPage({ params: { grantId } }: Props) {
+  const grant = await api.grant.get.query({ id: grantId });
   if (!grant) {
     return notFound();
   }
@@ -25,16 +25,16 @@ export default async function GrantPage({ params }: Props) {
       title={grant.name}
       action={
         <div className="flex gap-2">
+          <AddToCartButton grantId={grant.id} />
           {grant.userId === session?.id && (
             <Button
-              icon={Edit}
+              icon={Settings2}
               as={Link}
-              href={`/grants/${params.grantId}/edit`}
+              href={`/grants/${grantId}/manage`}
             >
-              Edit grant
+              Manage grant
             </Button>
           )}
-          <AddToCartButton grantId={grant.id} />
         </div>
       }
     >

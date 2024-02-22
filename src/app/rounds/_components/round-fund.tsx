@@ -28,7 +28,7 @@ export function RoundFundForm({ roundId }: { roundId: string }) {
         }}
       >
         <h3 className="text-xl font-semibold">Fund Round</h3>
-        <Fieldset name="amount" label="Amount">
+        <Fieldset name="amount" label="Amount" setValueAs={(v) => Number(v)}>
           <Input type="number" />
         </Fieldset>
         <Fieldset name="currency" label="Currency">

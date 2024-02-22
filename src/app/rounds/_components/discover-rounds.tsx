@@ -3,6 +3,7 @@ import { Clock, FunctionSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "~/components/ui/badge";
+import { distributionTypeLabels } from "~/server/api/routers/round/round.schemas";
 import { endsIn, formatDate } from "~/utils/date";
 
 export function DiscoverRounds({ rounds }: { rounds: Round[] }) {
@@ -44,10 +45,10 @@ function RoundCard({
       </div>
       <div className="px-2 py-3">
         <h3 className="mb-2 truncate text-lg font-semibold">{name}</h3>
-        <div className="flex gap-1">
+        <div className="flex flex-wrap gap-1">
           <Badge>
             <FunctionSquare className="size-4" />
-            Quadratic Funding
+            {distributionTypeLabels[distributionType]}
           </Badge>
           <Badge>
             <Clock className="size-4" /> {formatDate(startsAt)} -{" "}

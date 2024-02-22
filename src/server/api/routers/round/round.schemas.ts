@@ -8,6 +8,10 @@ export const distributionTypes = [
   },
 ] as const;
 
+export const distributionTypeLabels = distributionTypes.reduce(
+  (acc, x) => ({ ...acc, [x.value]: x.label }),
+  {} as Record<string, string>,
+);
 export const ZDistributionTypeSchema = z.enum(
   distributionTypes.map((type) => type.value) as [string, ...string[]],
 );
