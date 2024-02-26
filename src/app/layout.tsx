@@ -10,6 +10,7 @@ import { Button } from "~/components/ui/button";
 import { ShoppingCart, UserIcon } from "lucide-react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
+import { Footer } from "./(layout)/_components/footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -37,7 +38,7 @@ export default function RootLayout({
               <Header />
               <div className="flex-1 px-4 pb-24">{children}</div>
             </main>
-            <footer className="bg-gray-900 py-24 text-gray-300"></footer>
+            <Footer />
           </TRPCReactProvider>
         </body>
       </html>
