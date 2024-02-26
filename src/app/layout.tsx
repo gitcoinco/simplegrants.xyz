@@ -30,6 +30,7 @@ export default function RootLayout({
   return (
     <ClerkProvider signInUrl="/sign-in">
       <html lang="en">
+        <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
         <body className={`font-sans ${inter.variable} bg-gray-100`}>
           <TRPCReactProvider>
             <main className="mx-auto flex min-h-screen max-w-screen-xl flex-col bg-white">
