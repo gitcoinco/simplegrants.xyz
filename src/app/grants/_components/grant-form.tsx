@@ -27,7 +27,7 @@ export function GrantForm({
 }: Props) {
   return (
     <Form
-      className="flex max-w-screen-sm flex-col gap-2"
+      className="mx-auto flex max-w-screen-sm flex-col gap-2"
       schema={ZGrantCreateInputSchema}
       onSubmit={onSubmit}
       defaultValues={defaultValues}
