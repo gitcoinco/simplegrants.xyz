@@ -24,7 +24,11 @@ model Round {
     endsAt           DateTime
     userId           String
     distributionType String
-    stripeAccount    String?
+
+    fundedAmount Int @default(0)
+
+    stripeAccount String?
+    currency      String
 
     applications Application[]
 
