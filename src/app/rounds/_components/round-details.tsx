@@ -9,6 +9,8 @@ export function RoundDetails({
   id,
   name,
   image,
+  fundedAmount,
+  currency,
   description,
   stripeAccount,
 }: Round) {
@@ -29,7 +31,7 @@ export function RoundDetails({
           <div className="mx-auto">
             <div className="text-sm text-gray-600">Funded amount</div>
             <div className="text-center text-2xl font-semibold leading-none text-green-500">
-              <RoundAmount id={id} />
+              {formatMoney(fundedAmount, currency)}
             </div>
           </div>
         )}
@@ -38,18 +40,4 @@ export function RoundDetails({
       <Markdown>{description}</Markdown>
     </div>
   );
-}
-
-function RoundAmount({ id = "" }) {
-  const balance = api.round.balance.useQuery({ id });
-
-  console.log(balance.data);
-  if (!balance.data)
-    return (
-      <div className="inline-flex animate-pulse bg-gray-200 text-transparent">
-        10000
-      </div>
-    );
-  const { amount, currency } = balance.data;
-  return <>{formatMoney(amount, currency)}</>;
 }

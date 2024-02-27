@@ -21,3 +21,28 @@
 - [ ] opengraph
 - [ ] opengraph for round
 - [ ] opengraph for grant
+
+### Tasks from feedback 2024-02-23
+
+- [x] add favicon
+- [x] add footer
+- [x] landing page: update heading and subtitle
+- [x] landing page: sections for "run a round", "find a round", "manage your grant"
+- [x] rounds page: search
+- [ ] rounds page: filter active/inactive
+- [x] rounds page: sort date created, title, funded
+- [x] rounds page: funded amount
+- [ ] grants page: search
+- [ ] grants page: stats for amount raised
+- [ ] grants page: sort date created, title, funded
+- [ ] view grant: stats (total raised + contributors)
+- [ ] view grant: sidebar with stats + cta + rounds in
+- [ ] checkout: fix images
+- [ ] checkout: format cart amount
+- [ ] checkout: show matching funds
+- [ ] profile: email preferences (checkbox if allowed to contact)
+- [ ] profile: total amount funded stats
+- [ ] profile: donation history
+- [ ] profile: owned grants
+- [ ] date input calendar - needs research
+-
