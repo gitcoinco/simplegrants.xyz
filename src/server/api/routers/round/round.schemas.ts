@@ -45,5 +45,21 @@ export const ZRoundFundInputSchema = z.object({
   successUrl: z.string(),
 });
 
+export enum SortBy {
+  name = "name",
+  funded = "funded",
+  createdAt = "createdAt",
+}
+export enum SortOrder {
+  asc = "asc",
+  desc = "desc",
+}
+
+export const ZFilterSchema = z.object({
+  search: z.string(),
+  sortBy: z.nativeEnum(SortBy),
+  order: z.nativeEnum(SortOrder),
+});
+
 export type TRoundCreateInputSchema = z.infer<typeof ZRoundCreateInputSchema>;
 export type TRoundUpdateInputSchema = z.infer<typeof ZRoundUpdateInputSchema>;

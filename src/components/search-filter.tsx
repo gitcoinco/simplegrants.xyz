@@ -2,6 +2,10 @@
 
 import { SearchInput, Select } from "~/components/ui/form/inputs";
 import { useFilter } from "~/hooks/useFilter";
+import type {
+  SortBy,
+  SortOrder,
+} from "~/server/api/routers/round/round.schemas";
 
 export function SearchWithFilter() {
   const { search, sortBy, order, setFilter } = useFilter();
@@ -15,7 +19,7 @@ export function SearchWithFilter() {
 
       <Select
         value={sortBy}
-        onChange={(e) => setFilter({ sortBy: e.target.value })}
+        onChange={(e) => setFilter({ sortBy: e.target.value as SortBy })}
       >
         <optgroup label="Sort by">
           <option value="name">Name</option>
@@ -24,7 +28,7 @@ export function SearchWithFilter() {
       </Select>
       <Select
         value={order}
-        onChange={(e) => setFilter({ order: e.target.value })}
+        onChange={(e) => setFilter({ order: e.target.value as SortOrder })}
       >
         <optgroup label="Order">
           <option value="asc">↓ Ascending</option>

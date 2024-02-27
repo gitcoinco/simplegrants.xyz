@@ -1,15 +1,7 @@
 import { parseAsString, parseAsStringEnum, useQueryStates } from "nuqs";
 import { useState } from "react";
 import { useDebounce } from "react-use";
-
-enum SortBy {
-  name = "name",
-  createdAt = "createdAt",
-}
-enum SortOrder {
-  asc = "asc",
-  desc = "desc",
-}
+import { SortBy, SortOrder } from "~/server/api/routers/round/round.schemas";
 
 export function useFilter() {
   const [filter, setFilter] = useQueryStates(

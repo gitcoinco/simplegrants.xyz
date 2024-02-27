@@ -11,6 +11,7 @@ import {
   ZRoundCreateInputSchema,
   ZRoundUpdateInputSchema,
   ZRoundFundInputSchema,
+  ZFilterSchema,
 } from "./round.schemas";
 import {
   TransferType,
@@ -23,11 +24,6 @@ export async function getRound(id: string, db: PrismaClient) {
   return db.round.findFirst({ where: { id } });
 }
 
-const ZFilterSchema = z.object({
-  search: z.string(),
-  sortBy: z.enum(["name", "createdAt"]).default("createdAt"),
-  order: z.enum(["asc", "desc"]),
-});
 export const roundRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({ id: z.string() }))
