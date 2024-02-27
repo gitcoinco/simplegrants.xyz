@@ -2,11 +2,9 @@
 import type { Round } from "@prisma/client";
 import Image from "next/image";
 import { Markdown } from "~/components/ui/markdown";
-import { api } from "~/trpc/react";
 import { formatMoney } from "~/utils/formatMoney";
 
 export function RoundDetails({
-  id,
   name,
   image,
   fundedAmount,

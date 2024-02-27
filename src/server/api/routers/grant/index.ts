@@ -49,10 +49,12 @@ export const grantRouter = createTRPCRouter({
   approved: publicProcedure
     .input(z.object({ roundId: z.string() }))
     .query(async ({ ctx, input: { roundId } }) => {
-      return ctx.db.application.findMany({
-        where: { roundId, approvedById: { not: null } },
-        include: { grant: true },
-      });
+      return ctx.db.application
+        .findMany({
+          where: { roundId, approvedById: { not: null } },
+          include: { grant: true },
+        })
+        .then((applications) => applications.map((a) => a.grant));
     }),
 
   create: protectedProcedure

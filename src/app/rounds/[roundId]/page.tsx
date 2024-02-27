@@ -9,6 +9,7 @@ import { RoundApply } from "../_components/round-apply";
 import { PageSection } from "~/app/(layout)/_components/page-section";
 import { DiscoverGrants } from "~/app/grants/_components/discover-grants";
 import { RoundDetails } from "../_components/round-details";
+import { RoundGrants } from "../_components/round-grants";
 
 type Props = {
   params: { roundId: string };
@@ -21,8 +22,6 @@ export default async function RoundPage({ params: { roundId } }: Props) {
     return notFound();
   }
 
-  const approvedApplications = await api.grant.approved.query({ roundId });
-  const grants = approvedApplications.map((a) => a.grant);
   return (
     <PageSection
       title={round.name}
@@ -52,7 +51,7 @@ export default async function RoundPage({ params: { roundId } }: Props) {
       <RoundDetails {...round} />
 
       <h3 className="mb-2 text-xl font-semibold">Applied grants</h3>
-      <DiscoverGrants grants={grants} />
+      <RoundGrants roundId={roundId} />
     </PageSection>
   );
 }
