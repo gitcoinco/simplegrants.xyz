@@ -5,10 +5,9 @@ import { PageSection } from "../(layout)/_components/page-section";
 import { Button } from "~/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { SearchWithFilter } from "~/components/search-filter";
 
 export default async function DiscoverRoundsPage() {
-  const rounds = await api.round.list.query();
-
   return (
     <PageSection
       title="Discover Rounds"
@@ -18,7 +17,8 @@ export default async function DiscoverRoundsPage() {
         </Button>
       }
     >
-      <DiscoverRounds rounds={rounds} />
+      <SearchWithFilter />
+      <DiscoverRounds />
     </PageSection>
   );
 }

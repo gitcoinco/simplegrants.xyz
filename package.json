@@ -33,6 +33,7 @@
     "lucide-react": "^0.330.0",
     "nanoid": "^5.0.5",
     "next": "^14.0.4",
+    "nuqs": "^1.17.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.50.1",

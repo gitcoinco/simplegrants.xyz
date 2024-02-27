@@ -23,12 +23,24 @@ export async function getRound(id: string, db: PrismaClient) {
   return db.round.findFirst({ where: { id } });
 }
 
+const ZFilterSchema = z.object({
+  search: z.string(),
+  sortBy: z.enum(["name", "createdAt"]).default("createdAt"),
+  order: z.enum(["asc", "desc"]),
+});
 export const roundRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => getRound(input.id, ctx.db)),
 
-  list: publicProcedure.query(({ ctx }) => ctx.db.round.findMany({})),
+  list: publicProcedure
+    .input(ZFilterSchema)
+    .query(({ input: { sortBy, search, order }, ctx }) => {
+      return ctx.db.round.findMany({
+        where: { name: { contains: search, mode: "insensitive" } },
+        orderBy: { [sortBy]: order },
+      });
+    }),
   balance: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {

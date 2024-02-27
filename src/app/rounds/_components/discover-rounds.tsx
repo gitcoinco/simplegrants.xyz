@@ -1,18 +1,26 @@
+"use client";
 import type { Round } from "@prisma/client";
 import { Clock, FunctionSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "~/components/ui/badge";
+import { useDebouncedFilter } from "~/hooks/useFilter";
 import { distributionTypeLabels } from "~/server/api/routers/round/round.schemas";
+import { api } from "~/trpc/react";
 import { endsIn, formatDate } from "~/utils/date";
 
-export function DiscoverRounds({ rounds }: { rounds: Round[] }) {
+export function DiscoverRounds({}) {
+  const { sortBy, order, search } = useDebouncedFilter();
+  const rounds = api.round.list.useQuery({ sortBy, order, search });
   return (
     <div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {rounds.map((round) => (
-          <RoundCard key={round.id} {...round} />
-        ))}
+        {rounds.isLoading ? (
+          <div>loading...</div>
+        ) : !rounds.data?.length ? (
+          <div>no results</div>
+        ) : null}
+        {rounds.data?.map((round) => <RoundCard key={round.id} {...round} />)}
       </div>
     </div>
   );
