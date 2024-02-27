@@ -1,5 +1,5 @@
 "use client";
-import type { Round } from "@prisma/client";
+import type { Application, Round } from "@prisma/client";
 import { Clock, FunctionSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -34,7 +34,7 @@ function RoundCard({
   round,
   isLoading,
 }: {
-  round?: Round;
+  round?: Round & { applications: Application[] };
   isLoading: boolean;
 }) {
   if (isLoading)
@@ -49,7 +49,10 @@ function RoundCard({
     endsAt,
     fundedAmount,
     currency,
+    applications,
   } = round;
+
+  console.log(applications);
   return (
     <Link href={`/rounds/${id}`} className="min-h-72 rounded-xl border">
       <div className="relative aspect-video ">
@@ -75,6 +78,10 @@ function RoundCard({
             {formatMoney(fundedAmount, currency)}
           </div>
           <div>funded</div>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="text-xl font-semibold">{applications.length}</div>
+          <div>grants</div>
         </div>
         <div className="flex flex-wrap gap-1">
           <Badge>

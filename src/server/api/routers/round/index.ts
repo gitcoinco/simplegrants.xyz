@@ -35,6 +35,13 @@ export const roundRouter = createTRPCRouter({
       return ctx.db.round.findMany({
         where: { name: { contains: search, mode: "insensitive" } },
         orderBy: { [sortBy]: order },
+        include: {
+          applications: {
+            where: {
+              approvedById: { not: undefined },
+            },
+          },
+        },
       });
     }),
   balance: publicProcedure
