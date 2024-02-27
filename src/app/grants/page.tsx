@@ -1,14 +1,11 @@
-import { api } from "~/trpc/server";
-
 import { DiscoverGrants } from "./_components/discover-grants";
 import { PageSection } from "../(layout)/_components/page-section";
 import { Plus } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
+import { SearchWithFilter } from "~/components/search-filter";
 
 export default async function DiscoverGrantsPage() {
-  const grants = await api.grant.list.query();
-
   return (
     <PageSection
       title="Discover Grants"
@@ -18,7 +15,20 @@ export default async function DiscoverGrantsPage() {
         </Button>
       }
     >
-      <DiscoverGrants grants={grants} />
+      <SearchWithFilter
+        searchPlaceholder="Search grants..."
+        sortOptions={[
+          {
+            value: "name",
+            label: "Name",
+          },
+          {
+            value: "createdAt",
+            label: "Created date",
+          },
+        ]}
+      />
+      <DiscoverGrants />
     </PageSection>
   );
 }

@@ -20,6 +20,7 @@ import {
   getCustomerFee,
 } from "~/server/stripe";
 import { verifyGrantOwnership } from "../application";
+import { ZFilterSchema } from "../round/round.schemas";
 
 export async function getGrant(id: string, db: PrismaClient) {
   return db.grant.findFirst({ where: { id } });
@@ -31,11 +32,11 @@ export const grantRouter = createTRPCRouter({
     .query(({ ctx, input }) => getGrant(input.id, ctx.db)),
 
   list: publicProcedure
-    // .input(z.object({ roundId: z.string() }))
-    .query(({ ctx, input }) =>
+    .input(ZFilterSchema)
+    .query(({ ctx, input: { sortBy, order, search } }) =>
       ctx.db.grant.findMany({
-        // where: { roundId: input.roundId },
-        // include: { grant: true },
+        where: { name: { contains: search, mode: "insensitive" } },
+        orderBy: { [sortBy]: order },
       }),
     ),
 

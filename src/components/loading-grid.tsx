@@ -22,7 +22,6 @@ export function LoadingGrid<T>({
   isLoading,
   renderItem,
 }: Props<T>) {
-  console.log(error, data);
   return (
     <>
       {error ? (

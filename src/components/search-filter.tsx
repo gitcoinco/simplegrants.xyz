@@ -8,7 +8,18 @@ import type {
 } from "~/server/api/routers/round/round.schemas";
 import { Label } from "./ui/form/label";
 
-export function SearchWithFilter() {
+type SortOption = {
+  value: string;
+  label: string;
+};
+
+export function SearchWithFilter({
+  searchPlaceholder = "",
+  sortOptions,
+}: {
+  searchPlaceholder: string;
+  sortOptions: SortOption[];
+}) {
   const { search, sortBy, order, setFilter } = useFilter();
   return (
     <div className="mb-8 flex items-end gap-2">
@@ -16,7 +27,7 @@ export function SearchWithFilter() {
         <SearchInput
           value={search}
           onChange={(e) => setFilter({ search: e.target.value })}
-          placeholder="Search rounds..."
+          placeholder={searchPlaceholder}
         />
       </div>
 
@@ -28,11 +39,11 @@ export function SearchWithFilter() {
           value={sortBy}
           onChange={(e) => setFilter({ sortBy: e.target.value as SortBy })}
         >
-          <optgroup label="Sort by">
-            <option value="name">Name</option>
-            <option value="fundedAmount">Funded</option>
-            <option value="createdAt">Created date</option>
-          </optgroup>
+          {sortOptions.map(({ label, value }) => (
+            <option className="p-2" key={value} value={value}>
+              {label}
+            </option>
+          ))}
         </Select>
       </div>
       <div>
@@ -43,10 +54,8 @@ export function SearchWithFilter() {
           value={order}
           onChange={(e) => setFilter({ order: e.target.value as SortOrder })}
         >
-          <optgroup label="Order">
-            <option value="asc">↓ Ascending</option>
-            <option value="desc">↑ Descending</option>
-          </optgroup>
+          <option value="asc">↓ Ascending</option>
+          <option value="desc">↑ Descending</option>
         </Select>
       </div>
     </div>

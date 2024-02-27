@@ -1,5 +1,3 @@
-import { api } from "~/trpc/server";
-
 import { DiscoverRounds } from "./_components/discover-rounds";
 import { PageSection } from "../(layout)/_components/page-section";
 import { Button } from "~/components/ui/button";
@@ -17,7 +15,23 @@ export default async function DiscoverRoundsPage() {
         </Button>
       }
     >
-      <SearchWithFilter />
+      <SearchWithFilter
+        searchPlaceholder="Search rounds..."
+        sortOptions={[
+          {
+            value: "name",
+            label: "Name",
+          },
+          {
+            value: "createdAt",
+            label: "Created date",
+          },
+          {
+            value: "fundedAmount",
+            label: "Funded amount",
+          },
+        ]}
+      />
       <DiscoverRounds />
     </PageSection>
   );
