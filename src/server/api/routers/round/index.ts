@@ -40,32 +40,9 @@ export const roundRouter = createTRPCRouter({
   balance: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-      const round = await getRound(input.id, ctx.db);
-      const stripeAccount = round?.stripeAccount;
-      if (!stripeAccount) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Round must have a connected Stripe account",
-        });
-      }
-
-      return ctx.stripe.charges
-        .list(
-          {
-            limit: 100,
-            // List all transfers to the round and sum them
-            transfer_group: createTransferGroup(input.id),
-          },
-          { stripeAccount },
-        )
-        .then((r) => {
-          console.log(r.data[0]);
-          const currency = r.data?.[0]?.currency;
-          const amount = r.data.reduce((sum, x) => sum + x.amount, 0);
-          return { amount, currency };
-        });
+      // TODO: Not used anymore?
+      return getRound(input.id, ctx.db);
     }),
-  // .then(sumTransfers)),
 
   create: protectedProcedure
     .input(ZRoundCreateInputSchema)
@@ -106,10 +83,11 @@ export const roundRouter = createTRPCRouter({
       if (!round) {
         throw new TRPCError({ code: "NOT_FOUND", message: "Round not found" });
       }
-      if (!round.stripeAccount) {
+      if (!round.stripeAccount || !round.currency) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Round must have a connected Stripe account",
+          message:
+            "Round must have a connected Stripe account and a configured currency",
         });
       }
 
@@ -126,7 +104,7 @@ export const roundRouter = createTRPCRouter({
             {
               quantity: 1,
               price_data: {
-                currency: input.currency,
+                currency: round.currency,
                 product_data: {
                   name: String(round.name),
                   description: String(round.description),

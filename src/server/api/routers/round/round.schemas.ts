@@ -20,7 +20,8 @@ const Round = z.object({
   name: z.string().min(3),
   description: z.string(),
   image: z.string().url(),
-  stripeAccount: ZStripeAccount.nullish(),
+  stripeAccount: ZStripeAccount,
+  currency: z.enum(["usd"]).default("usd"),
   startsAt: z.coerce.date(),
   endsAt: z.coerce.date().refine((date) => date > new Date(), {
     message: "End date must be after today",
@@ -41,13 +42,12 @@ export const ZRoundUpdateInputSchema = Round.partial();
 export const ZRoundFundInputSchema = z.object({
   id: z.string(),
   amount: z.number(),
-  currency: z.string().length(3),
   successUrl: z.string(),
 });
 
 export enum SortBy {
   name = "name",
-  funded = "funded",
+  fundedAmount = "fundedAmount",
   createdAt = "createdAt",
 }
 export enum SortOrder {
