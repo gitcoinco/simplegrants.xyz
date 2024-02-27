@@ -3,42 +3,55 @@ import type { Round } from "@prisma/client";
 import { Clock, FunctionSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { LoadingGrid } from "~/components/loading-grid";
 import { Badge } from "~/components/ui/badge";
-import { useDebouncedFilter } from "~/hooks/useFilter";
+import { useFilter } from "~/hooks/useFilter";
 import { distributionTypeLabels } from "~/server/api/routers/round/round.schemas";
 import { api } from "~/trpc/react";
 import { endsIn, formatDate } from "~/utils/date";
 import { formatMoney } from "~/utils/formatMoney";
 
 export function DiscoverRounds({}) {
-  const { sortBy, order, search } = useDebouncedFilter();
-  const rounds = api.round.list.useQuery({ sortBy, order, search });
+  const { sortBy, order, search } = useFilter();
+  const rounds = api.round.list.useQuery(
+    { sortBy, order, search },
+    { retry: 0 },
+  );
+
   return (
     <div>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {rounds.isLoading ? (
-          <div>loading...</div>
-        ) : !rounds.data?.length ? (
-          <div>no results</div>
-        ) : null}
-        {rounds.data?.map((round) => <RoundCard key={round.id} {...round} />)}
-      </div>
+      <LoadingGrid
+        {...rounds}
+        renderItem={(round, { isLoading }) => (
+          <RoundCard key={round.id} isLoading={isLoading} round={round} />
+        )}
+      />
     </div>
   );
 }
 
 function RoundCard({
-  id,
-  name,
-  image,
-  distributionType,
-  startsAt,
-  endsAt,
-  fundedAmount,
-  currency,
-}: Round) {
+  round,
+  isLoading,
+}: {
+  round?: Round;
+  isLoading: boolean;
+}) {
+  if (isLoading)
+    return <div className="h-72 animate-pulse rounded-xl bg-gray-100" />;
+  if (!round) return null;
+  const {
+    id,
+    name,
+    image,
+    distributionType,
+    startsAt,
+    endsAt,
+    fundedAmount,
+    currency,
+  } = round;
   return (
-    <Link href={`/rounds/${id}`} className="rounded-xl border">
+    <Link href={`/rounds/${id}`} className="min-h-72 rounded-xl border">
       <div className="relative aspect-video ">
         <Badge className="absolute right-2 top-2 z-10">
           Ends in {endsIn(endsAt)}

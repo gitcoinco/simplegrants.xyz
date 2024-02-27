@@ -1,5 +1,7 @@
-import { format, formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow, isDate } from "date-fns";
 
-export const formatDate = (date: Date | number) => format(date, "yyyy-MM-dd");
+export const formatDate = (date?: Date | number) =>
+  isDate(date) ? format(date, "yyyy-MM-dd") : "";
 
-export const endsIn = (date: Date | number) => formatDistanceToNow(date);
+export const endsIn = (date?: Date | number) =>
+  isDate(date) ? formatDistanceToNow(date) : "";

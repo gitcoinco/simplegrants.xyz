@@ -1,6 +1,4 @@
 import { parseAsString, parseAsStringEnum, useQueryStates } from "nuqs";
-import { useState } from "react";
-import { useDebounce } from "react-use";
 import { SortBy, SortOrder } from "~/server/api/routers/round/round.schemas";
 
 export function useFilter() {
@@ -18,13 +16,4 @@ export function useFilter() {
   );
 
   return { ...filter, setFilter };
-}
-
-export function useDebouncedFilter() {
-  const { setFilter: _, ...filter } = useFilter();
-  const [debouncedFilter, setDebouncedFilter] = useState(filter);
-
-  useDebounce(() => setDebouncedFilter(filter), 300, [filter]);
-
-  return debouncedFilter;
 }
