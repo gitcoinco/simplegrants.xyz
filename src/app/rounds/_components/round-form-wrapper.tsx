@@ -9,7 +9,13 @@ import { useFileUpload } from "~/hooks/useFileUpload";
 import type { TRoundUpdateInputSchema } from "~/server/api/routers/round/round.schemas";
 import { dateToInputDate } from "~/components/ui/form";
 
-export default function RoundFormWrapper({ round }: { round?: Round }) {
+export default function RoundFormWrapper({
+  round,
+  stripeAccount,
+}: {
+  round?: Round;
+  stripeAccount?: string;
+}) {
   const router = useRouter();
   const upload = useFileUpload();
 
@@ -26,6 +32,7 @@ export default function RoundFormWrapper({ round }: { round?: Round }) {
 
   const defaultValues = {
     ...round,
+    stripeAccount,
     startsAt: dateToInputDate(round?.startsAt ?? new Date()),
     endsAt: dateToInputDate(round?.endsAt),
   } as TRoundUpdateInputSchema;

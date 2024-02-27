@@ -12,7 +12,7 @@ export default async function FundRoundPage({
 
   return (
     <div>
-      <RoundFundForm roundId={roundId} />
+      <RoundFundForm round={round} />
     </div>
   );
 }
