@@ -23,6 +23,7 @@ export function SearchWithFilter() {
       >
         <optgroup label="Sort by">
           <option value="name">Name</option>
+          <option value="fundedAmount">Funded</option>
           <option value="createdAt">Created date</option>
         </optgroup>
       </Select>
