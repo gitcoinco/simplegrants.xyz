@@ -13,9 +13,13 @@ import {
 } from "~/server/api/routers/application/application.schemas";
 import { api } from "~/trpc/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { cn } from "~/utils/cn";
+import { Badge } from "~/components/ui/badge";
 
 export function RoundApply({ roundId }: { roundId: string }) {
   const grants = api.session.grants.useQuery();
+  const applications = api.session.applications.useQuery();
+
   const apply = api.application.create.useMutation();
   const router = useRouter();
   const action = useSearchParams().get("action");
@@ -23,6 +27,7 @@ export function RoundApply({ roundId }: { roundId: string }) {
   function handleClose() {
     router.replace(`/rounds/${roundId}`);
   }
+
   if (grants.isLoading) return null;
   return (
     <Drawer.Root
@@ -46,13 +51,19 @@ export function RoundApply({ roundId }: { roundId: string }) {
           >
             <input type="hidden" value={roundId} name="roundId" />
             <div className="mb-2 max-h-52 divide-y overflow-auto rounded border">
-              {grants.data?.map((grant) => (
-                <GrantRadio
-                  key={grant.id}
-                  value={grant.id}
-                  label={grant.name}
-                />
-              ))}
+              {grants.data?.map((grant) => {
+                const hasApplied = Boolean(
+                  applications.data?.find((appl) => appl.grantId === grant.id),
+                );
+                return (
+                  <GrantRadio
+                    key={grant.id}
+                    hasApplied={hasApplied}
+                    value={grant.id}
+                    label={grant.name}
+                  />
+                );
+              })}
             </div>
             <div className="flex justify-end">
               <ApplyButton isLoading={apply.isLoading} />
@@ -66,13 +77,21 @@ export function RoundApply({ roundId }: { roundId: string }) {
   );
 }
 
-function GrantRadio({ label = "", value = "" }) {
+function GrantRadio({ label = "", value = "", hasApplied = false }) {
   const { register } = useFormContext<TApplicationCreate>();
 
   return (
-    <Label className="flex cursor-pointer items-center gap-2 p-4 hover:bg-gray-100">
-      <Radio value={value} {...register("grantId")} />
-      {label}
+    <Label
+      className={cn(
+        "flex cursor-pointer items-center justify-between p-4 hover:bg-gray-100",
+        { ["opacity-50"]: hasApplied },
+      )}
+    >
+      <div className="flex items-center gap-2">
+        <Radio value={value} disabled={hasApplied} {...register("grantId")} />
+        {label}
+      </div>
+      {hasApplied && <Badge>Already applied</Badge>}
     </Label>
   );
 }
