@@ -32,11 +32,8 @@ export function Fieldset({
       {label && <Label htmlFor={name}>{label}</Label>}
       {cloneElement(children as ReactElement, {
         id: name,
-        ...register(name, {
-          setValueAs,
-          /* eslint-disable-next-line */
-          onBlur: (e) => onBlur?.(e.target.value),
-        }),
+        ...register(name, { setValueAs }),
+        onBlur,
       })}
       {error && (
         <span className="text-xs text-red-500">{error.message as string}</span>

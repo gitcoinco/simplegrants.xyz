@@ -2,15 +2,17 @@
 
 import { XIcon } from "lucide-react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
 import { type SubmitHandler } from "react-hook-form";
 import { useLocalStorage } from "react-use";
+import { CurrencyInput } from "~/components/currency-input";
 
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
 import { FieldArray } from "~/components/ui/form/field-array";
 import { Fieldset } from "~/components/ui/form/fieldset";
-import { Input } from "~/components/ui/form/inputs";
+import { Skeleton } from "~/components/ui/skeleton";
 import {
   ZDonateInputSchema,
   type TDonateInputSchema,
@@ -44,6 +46,7 @@ type Props = {
 
 function Checkout({ defaultValues, isLoading, onSubmit }: Props) {
   const cart = useCart();
+
   return (
     <Form
       schema={ZDonateInputSchema}
@@ -95,32 +98,42 @@ function CartItem({
   onUpdate: (amount: number) => void;
   onRemove: () => void;
 }) {
-  const cart = useCart();
   const { data, isLoading } = api.grant.get.useQuery({ id: grantId });
 
-  // if (!data) return null;
   return (
     <div
-      className={cn("relative flex gap-2 border", {
+      className={cn("relative flex gap-2 rounded border", {
         ["animate-pulse"]: isLoading,
       })}
     >
-      <div className="h-32 w-48 bg-gray-200" />
+      <div className="relative aspect-video w-48 bg-gray-200">
+        {data && (
+          <Image
+            alt={data.name}
+            src={data.image}
+            sizes="500px"
+            fill
+            style={{ objectFit: "cover" }}
+          />
+        )}
+      </div>
       <div className="p-2">
-        <div>
-          <Link tabIndex={-1} href={`/grants/${grantId}`}>
-            <h3 className="mb-4 text-xl font-semibold">{data?.name}</h3>
-          </Link>
+        <div className="mb-4">
+          <Skeleton isLoading={!data} className="min-h-6 min-w-48">
+            <Link tabIndex={-1} href={`/grants/${grantId}`}>
+              <h3 className="text-xl font-semibold">{data?.name}</h3>
+            </Link>
+          </Skeleton>
         </div>
         <div>
           <Fieldset
             name={`grants.${index}.amount`}
-            setValueAs={(v) => Number(v)}
             onBlur={(value) => {
+              console.log("onBlur", value);
               onUpdate(Number(value));
             }}
           >
-            <Input type="number" />
+            <CurrencyInput currency="$" />
           </Fieldset>
         </div>
         <Button

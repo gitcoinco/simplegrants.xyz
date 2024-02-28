@@ -23,10 +23,10 @@ function AddToCart({ grantId = "" }) {
       icon={ShoppingCart}
       onClick={() => {
         cart.set(grantId);
-        router.replace("/checkout");
+        router.push("/checkout");
       }}
     >
-      Add to cart
+      Donate <span className="hidden pl-1 sm:inline"> to this project</span>
     </Button>
   );
 }

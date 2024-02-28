@@ -17,7 +17,7 @@ export const ZDonateInputSchema = z.object({
       amount: z.number(),
     }),
   ),
-  successUrl: z.string().url(),
+  successUrl: z.string(),
 });
 
 export type TGrantCreateInputSchema = z.infer<typeof ZGrantCreateInputSchema>;
