@@ -49,6 +49,8 @@ export const mockRoundCreated = {
   endsAt: new Date(Date.now() + ONE_DAY),
   createdAt: new Date(),
   updatedAt: new Date(),
+  fundedAmount: 0,
+  currency: "usd",
   userId: mockUserCreated.id,
   distributionType: "quadratic-funding",
   stripeAccount: "acct_roundAccount",

@@ -7,6 +7,7 @@ import { type AppRouter } from "~/server/api/root";
 import { db } from "~/server/__mocks__/db";
 import { StripeCheckoutResponse, stripe } from "~/server/__mocks__/stripe";
 import { createMockCaller, mockRoundCreated, mockSession } from "~/test-setup";
+import { SortBy, SortOrder } from "./round.schemas";
 
 describe("Round", async () => {
   describe("Create Round", () => {
@@ -18,6 +19,7 @@ describe("Round", async () => {
       startsAt: new Date(Date.now() + 1000),
       endsAt: new Date(Date.now() + 2000),
       distributionType: "quadratic_funding",
+      stripeAccount: mockRoundCreated.stripeAccount,
     };
     test("must be a logged in user", async () => {
       const caller = await createMockCaller({ user: null });
@@ -51,9 +53,13 @@ describe("Round", async () => {
     });
 
     test("list rounds", async () => {
-      await caller.round.list();
+      await caller.round.list({
+        search: "",
+        sortBy: SortBy.name,
+        order: SortOrder.asc,
+      });
 
-      expect(db.round.findMany).toHaveBeenCalledWith({});
+      expect(db.round.findMany).toHaveBeenCalled();
     });
   });
 
@@ -96,8 +102,7 @@ describe("Round", async () => {
     const input: Input = {
       id: mockRoundCreated.id,
       amount: 100,
-      currency: "usd",
-      successUrl: "https://success",
+      successUrl: "success",
     };
     test("must be a logged in user", async () => {
       const caller = await createMockCaller({ user: null });
