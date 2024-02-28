@@ -109,14 +109,12 @@ export const grantRouter = createTRPCRouter({
       });
 
       const currency = "usd";
-      let totalDonation = 0;
       const lineItems = grants.map((grant) => {
         const amount = input.grants.find((g) => g.id === grant.id)?.amount;
         if (!amount) {
           throw new Error("Grant amount not found");
         }
 
-        totalDonation += amount;
         return {
           quantity: 1,
           price_data: {
@@ -129,20 +127,6 @@ export const grantRouter = createTRPCRouter({
           },
         };
       });
-
-      if (true) {
-        lineItems.push({
-          price_data: {
-            currency,
-            product_data: {
-              name: "Stripe Fees",
-              description: "Processing fees taken by Stripe",
-            },
-            unit_amount: Math.round(getCustomerFee(totalDonation) * 100),
-          },
-          quantity: 1,
-        });
-      }
 
       return createCheckout(
         {

@@ -18,19 +18,23 @@ async function handler(req: NextRequest) {
 
     if (event.type === "payment_intent.succeeded") {
       const { metadata, transfer_group } = event.data.object;
+      if (!transfer_group) {
+        throw new Error("Transfer group not found in payment");
+      }
 
       if (metadata.type === TransferType.round) {
         await db.round.update({
-          where: { id: transfer_group! },
+          where: { id: transfer_group },
           data: {
             fundedAmount: { increment: event.data.object.amount },
           },
         });
       }
       if (metadata.type === TransferType.grant) {
-        if (!transfer_group) {
-          throw new Error("Transfer group not found in payment");
-        }
+        await db.contribution.updateMany({
+          where: { transferGroup: transfer_group },
+          data: { status: "success" },
+        });
       }
     }
     return NextResponse.json({ result: event, ok: true });
