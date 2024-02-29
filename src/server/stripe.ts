@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { Stripe } from "stripe";
-import { getBaseUrl, getUrl } from "~/trpc/shared";
+import { getBaseUrl } from "~/trpc/shared";
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -10,9 +10,17 @@ type Checkout = {
   metadata: Stripe.Checkout.SessionCreateParams.PaymentIntentData["metadata"];
   transferGroup: string;
   stripeAccount?: string;
+  email?: string;
 };
 export async function createCheckout(
-  { successUrl, transferGroup, metadata, lineItems, stripeAccount }: Checkout,
+  {
+    successUrl,
+    transferGroup,
+    metadata,
+    lineItems,
+    stripeAccount,
+    email,
+  }: Checkout,
   stripe: Stripe,
 ) {
   return stripe.checkout.sessions.create(
@@ -20,6 +28,7 @@ export async function createCheckout(
       mode: "payment",
       success_url: `${getBaseUrl()}/${successUrl}?session_id={CHECKOUT_SESSION_ID}`,
       payment_method_types: ["card"],
+      customer_email: email,
       payment_intent_data: {
         // With this group we can query round balance and handle payouts
         transfer_group: transferGroup,
@@ -38,14 +47,4 @@ export enum TransferType {
 }
 export function createTransferGroup(id = nanoid()) {
   return id;
-}
-
-export function getCustomerFee(amount: number): number {
-  const fixedFee = 0.3;
-  const percentFee = 0.029;
-
-  return roundNumber((amount + fixedFee) / (1 - percentFee) - amount);
-}
-function roundNumber(num: number) {
-  return Math.round((num + Number.EPSILON) * 100) / 100;
 }

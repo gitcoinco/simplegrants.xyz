@@ -105,6 +105,7 @@ export const roundRouter = createTRPCRouter({
             userId: ctx.user.id,
             type: TransferType.round,
           },
+          email: ctx.user.emailAddresses?.[0]?.emailAddress,
           transferGroup: createTransferGroup(input.id),
           stripeAccount: round.stripeAccount,
           lineItems: [

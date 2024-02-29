@@ -18,7 +18,7 @@ import { Badge } from "~/components/ui/badge";
 
 export function RoundApply({ roundId }: { roundId: string }) {
   const grants = api.session.grants.useQuery();
-  const applications = api.session.applications.useQuery();
+  const applications = api.session.applications.useQuery({ roundId });
 
   const apply = api.application.create.useMutation();
   const router = useRouter();

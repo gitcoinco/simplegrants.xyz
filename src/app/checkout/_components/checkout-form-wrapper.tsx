@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { CheckoutForm, useCart } from "./checkout-form";
 import { useEffect } from "react";
-import { Alert } from "~/components/ui/alert";
 
 export default function CheckoutFormWrapper() {
   const router = useRouter();

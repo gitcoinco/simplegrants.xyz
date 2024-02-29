@@ -1,4 +1,5 @@
 import { applicationRouter } from "~/server/api/routers/application";
+import { contributionRouter } from "~/server/api/routers/contribution";
 import { grantRouter } from "~/server/api/routers/grant";
 import { roundRouter } from "~/server/api/routers/round";
 import { stripeRouter } from "~/server/api/routers/stripe";
@@ -14,6 +15,7 @@ import { createTRPCRouter, t } from "~/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   application: applicationRouter,
+  contribution: contributionRouter,
   grant: grantRouter,
   round: roundRouter,
   stripe: stripeRouter,

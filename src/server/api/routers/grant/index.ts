@@ -1,6 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import type Stripe from "stripe";
 import { z } from "zod";
 
 import {
@@ -17,7 +16,6 @@ import {
   TransferType,
   createCheckout,
   createTransferGroup,
-  getCustomerFee,
 } from "~/server/stripe";
 import { verifyGrantOwnership } from "../application";
 import { ZFilterSchema } from "../round/round.schemas";
@@ -33,10 +31,19 @@ export const grantRouter = createTRPCRouter({
 
   list: publicProcedure
     .input(ZFilterSchema)
-    .query(({ ctx, input: { sortBy, order, search } }) =>
-      ctx.db.grant.findMany({
+    .query(async ({ ctx, input: { sortBy, order, search } }) => {
+      return ctx.db.grant.findMany({
         where: { name: { contains: search, mode: "insensitive" } },
         orderBy: { [sortBy]: order },
+      });
+    }),
+
+  funding: publicProcedure
+    .input(z.object({ ids: z.array(z.string()) }))
+    .query(({ ctx, input }) =>
+      ctx.db.contribution.findMany({
+        where: { grantId: { in: input.ids }, status: "success" },
+        select: { amount: true },
       }),
     ),
 
@@ -97,12 +104,14 @@ export const grantRouter = createTRPCRouter({
         select: { id: true, name: true, description: true },
       });
 
+      // TODO: Verify grant has an approved application?
+
       const transferGroup = createTransferGroup();
 
       await ctx.db.contribution.createMany({
         data: input.grants.map(({ id, amount }) => ({
           transferGroup,
-          amount,
+          amount: amount * 100,
           grantId: id,
           userId: ctx.user.id,
         })),
@@ -130,6 +139,7 @@ export const grantRouter = createTRPCRouter({
 
       return createCheckout(
         {
+          email: ctx.user.emailAddresses?.[0]?.emailAddress,
           successUrl: input.successUrl,
           metadata: {
             userId: ctx.user.id,

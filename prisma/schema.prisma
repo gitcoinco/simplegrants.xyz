@@ -46,11 +46,11 @@ model Grant {
     userId        String
     stripeAccount String?
 
-    applications Application[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-    createdAt    DateTime       @default(now())
-    updatedAt    DateTime       @updatedAt
-    contribution Contribution[]
+    applications  Application[]
+    contributions Contribution[]
 
     @@index([name])
 }
@@ -67,6 +67,9 @@ model Contribution {
     grantId       String
     userId        String
     status        ContributionStatus @default(pending)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     grant Grant @relation(fields: [grantId], references: [id])
 }
