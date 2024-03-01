@@ -22,7 +22,7 @@ export function SearchWithFilter({
 }) {
   const { search, sortBy, order, setFilter } = useFilter();
   return (
-    <div className="mb-8 flex items-end gap-2">
+    <div className="mb-8 items-end gap-2 space-y-2 sm:flex">
       <div className="flex-1">
         <SearchInput
           value={search}
@@ -36,6 +36,7 @@ export function SearchWithFilter({
           Sort by
         </Label>
         <Select
+          className={"w-full sm:w-auto"}
           value={sortBy}
           onChange={(e) => setFilter({ sortBy: e.target.value as SortBy })}
         >
@@ -51,6 +52,7 @@ export function SearchWithFilter({
           Order
         </Label>
         <Select
+          className={"w-full sm:w-auto"}
           value={order}
           onChange={(e) => setFilter({ order: e.target.value as SortOrder })}
         >
