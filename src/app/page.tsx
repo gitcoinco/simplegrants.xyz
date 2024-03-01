@@ -14,10 +14,10 @@ export default async function LandingPage() {
         </h3>
       </div>
       <section className="flex flex-col gap-4 py-16 md:flex-row">
-        <Feature title="Running a round?">
+        <Feature title="Supporting projects?">
           <A href={`/rounds/create`}>Create a round</A>
         </Feature>
-        <Feature title="Looking for a round?">
+        <Feature title="Looking for funding?">
           <A href={`/rounds`}>Discover rounds</A>
         </Feature>
         <Feature title="Manage your grant?">
