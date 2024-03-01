@@ -15,7 +15,7 @@ const inter = Inter({
 export const metadata = {
   title: "SimpleGrants.xyz",
   description: "Funding platform for grants",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/favicon.svg" }],
 };
 
 export default function RootLayout({

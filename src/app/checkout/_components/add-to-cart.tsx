@@ -3,10 +3,10 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ShoppingCart } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
-import { useCart } from "./checkout-form";
-import { ShoppingCart } from "lucide-react";
+import { useCart } from "../hooks/useCart";
 
 function AddToCart({ grantId = "" }) {
   const router = useRouter();
