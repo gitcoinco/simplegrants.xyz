@@ -13,13 +13,20 @@ function AddToCart({ grantId = "" }) {
   const cart = useCart();
   if (cart.inCart(grantId))
     return (
-      <Button icon={ShoppingCart} as={Link} href={"/checkout"}>
+      <Button
+        className="w-full"
+        icon={ShoppingCart}
+        as={Link}
+        href={"/checkout"}
+      >
         Already in cart
       </Button>
     );
 
   return (
     <Button
+      variant="primary"
+      className="w-full"
       icon={ShoppingCart}
       onClick={() => {
         cart.set(grantId);

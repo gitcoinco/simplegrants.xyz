@@ -52,6 +52,41 @@ export const grantRouter = createTRPCRouter({
         .then((r) => r._sum),
     ),
 
+  funders: publicProcedure
+    .input(z.object({ ids: z.array(z.string()) }).optional())
+    .query(({ ctx, input }) =>
+      ctx.db.contribution.groupBy({
+        by: ["userId"],
+        where: {
+          grantId: input ? { in: input.ids } : undefined,
+          status: "success",
+        },
+      }),
+    ),
+
+  rounds: publicProcedure
+    .input(z.object({ ids: z.array(z.string()) }).optional())
+    .query(({ ctx, input }) => {
+      const now = new Date();
+      return ctx.db.application
+        .findMany({
+          where: {
+            grantId: input ? { in: input.ids } : undefined,
+            approvedById: { not: undefined },
+            round: {
+              startsAt: { lte: now },
+              endsAt: { gte: now },
+            },
+          },
+          select: {
+            round: {
+              select: { id: true, name: true },
+            },
+          },
+        })
+        .then((r) => r.map((appl) => appl.round));
+    }),
+
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {

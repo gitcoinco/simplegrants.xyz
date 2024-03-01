@@ -9,6 +9,7 @@ import { AddToCartButton } from "~/app/checkout/_components/add-to-cart";
 import { PageSection } from "~/app/(layout)/_components/page-section";
 import { GrantDetails } from "../_components/grant-details";
 import { currentUser } from "@clerk/nextjs";
+import { GrantSidebar } from "../_components/grant-sidebar";
 
 type Props = {
   params: { grantId: string };
@@ -25,7 +26,6 @@ export default async function GrantPage({ params: { grantId } }: Props) {
       title={grant.name}
       action={
         <div className="flex gap-2">
-          <AddToCartButton grantId={grant.id} />
           {grant.userId === session?.id && (
             <Button
               icon={Settings2}
@@ -38,7 +38,10 @@ export default async function GrantPage({ params: { grantId } }: Props) {
         </div>
       }
     >
-      <GrantDetails {...grant} />
+      <div className="flex-row-reverse gap-2 md:flex ">
+        <GrantSidebar {...grant} />
+        <GrantDetails {...grant} />
+      </div>
     </PageSection>
   );
 }

@@ -4,7 +4,7 @@ import { Markdown } from "~/components/ui/markdown";
 
 export function GrantDetails({ name, image, description }: Grant) {
   return (
-    <div>
+    <div className="flex-1">
       <div className="relative mb-6 h-72">
         <Image
           alt={name}
