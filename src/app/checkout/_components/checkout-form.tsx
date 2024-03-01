@@ -55,7 +55,7 @@ function Checkout({ isLoading }: Props) {
   );
 
   return (
-    <div className="gap-2 sm:flex">
+    <div className="gap-2 space-y-2 md:flex md:space-y-0">
       <div className="flex-1 space-y-2">
         <FieldArray
           name="grants"
@@ -88,7 +88,7 @@ function Checkout({ isLoading }: Props) {
           )}
         />
       </div>
-      <div className="flex flex-col justify-between border p-2 sm:w-96">
+      <div className="flex flex-col justify-between border p-2 md:w-96">
         <div className="space-y-4">
           <div>
             <h3 className="text-lg font-semibold">Summary</h3>
@@ -159,7 +159,7 @@ function CartItem({
         ["animate-pulse"]: isLoading,
       })}
     >
-      <div className="relative aspect-video w-48 bg-gray-200">
+      <div className="relative aspect-video bg-gray-200 sm:w-48">
         {grant && (
           <Image
             alt={grant.name}
