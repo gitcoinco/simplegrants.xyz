@@ -5,6 +5,7 @@ import { currentUser } from "@clerk/nextjs/server";
 
 import { Button } from "~/components/ui/button";
 import { SignInButton } from "~/app/(auth)/_components/sign-in";
+import { Logo } from "./logo";
 
 export async function Header() {
   const user = await currentUser();
@@ -13,7 +14,9 @@ export async function Header() {
     <header className="items-center justify-between p-2">
       <nav className="flex items-center justify-between">
         <Link href={"/"} className="">
-          <div className="h-8 w-8 rounded-full border-[16px] border-gray-900 transition-all hover:border-4 hover:bg-transparent" />
+          <div className="text-gray-700">
+            <Logo />
+          </div>
         </Link>
         <nav className="flex gap-2">
           <NavLink href={"/rounds"}>
