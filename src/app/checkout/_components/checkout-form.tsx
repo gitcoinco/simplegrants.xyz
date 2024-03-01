@@ -74,13 +74,18 @@ function Checkout({ isLoading }: Props) {
 
                 return (
                   <div
-                    className={cn("flex gap-2 px-4 text-sm", {
-                      ["opacity-50"]: contributions.isLoading,
-                    })}
+                    className={cn(
+                      "flex flex-wrap items-end justify-end text-sm",
+                      {
+                        ["opacity-50"]: contributions.isLoading,
+                      },
+                    )}
                   >
-                    {matchAmount > 0 ? "+" : ""}
-                    {formatMoney(matchAmount, "usd")}
-                    <div>estimated match</div>
+                    <div className="pr-1">
+                      {matchAmount > 0 ? "+" : ""}
+                      {formatMoney(matchAmount, "usd")}
+                    </div>
+                    <div className="text-xs">estimated match</div>
                   </div>
                 );
               }}
@@ -178,7 +183,7 @@ function CartItem({
             </Link>
           </Skeleton>
         </div>
-        <div className="flex items-center justify-between">
+        <div className="items-center justify-between md:flex">
           <div>
             <Fieldset
               name={`grants.${index}.amount`}
@@ -196,8 +201,9 @@ function CartItem({
           icon={XIcon}
           tabIndex={-1}
           variant="ghost"
+          rounded="full"
           onClick={onRemove}
-          className="absolute right-0 top-0"
+          className="absolute right-1 top-1"
         />
       </div>
     </div>
