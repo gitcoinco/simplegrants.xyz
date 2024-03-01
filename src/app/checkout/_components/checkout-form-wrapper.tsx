@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { CheckoutForm, useCart } from "./checkout-form";
 import { useEffect } from "react";
+import { Form } from "~/components/ui/form";
+import { ZDonateInputSchema } from "~/server/api/routers/grant/grant.schemas";
 
 export default function CheckoutFormWrapper() {
   const router = useRouter();
@@ -39,14 +41,16 @@ export default function CheckoutFormWrapper() {
   }
   return (
     <div className="">
-      <CheckoutForm
-        isLoading={donate.isLoading}
+      <Form
+        schema={ZDonateInputSchema}
         defaultValues={defaultValues}
         onSubmit={(data) => {
           donate.mutate(data);
         }}
-      />
-      <pre className="text-red-600">{error}</pre>
+      >
+        <CheckoutForm isLoading={donate.isLoading} />
+        <pre className="text-red-600">{error}</pre>
+      </Form>
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { describe, expect, test } from "vitest";
 import {
-  calculateMatchingForGrant,
   calculateQuadraticMatching,
   roundNumber,
 } from "./calculateQuadraticMatching";
@@ -62,52 +61,5 @@ describe("Calculate quadratic matching funds", () => {
 
     console.log(matching);
     expect(summedAmount).toBe(matchingAmount);
-  });
-  test.only("calculate extra matching", () => {
-    const _contributions = [
-      {
-        grantId: "grantA",
-        userId: "userA",
-        amount: 10,
-      },
-      {
-        grantId: "grantB",
-        userId: "userB",
-        amount: 5,
-      },
-      {
-        grantId: "grantA",
-        userId: "userB",
-        amount: 1,
-      },
-    ];
-    const checkoutContributions = [
-      {
-        amount: 5,
-        grantId: "grantC",
-        userId: "userA",
-      },
-      {
-        amount: 3,
-        grantId: "grantA",
-        userId: "userA",
-      },
-    ];
-    const matching = calculateMatchingForGrant(
-      contributions,
-      checkoutContributions,
-      matchingAmount,
-      "grantA",
-    );
-
-    console.log(matching);
-    console.log(
-      calculateMatchingForGrant(
-        contributions,
-        checkoutContributions,
-        matchingAmount,
-        "grantC",
-      ),
-    );
   });
 });

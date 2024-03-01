@@ -41,18 +41,3 @@ export function calculateQuadraticMatching(
 
   return matching;
 }
-
-export function calculateMatchingForGrant(
-  existingContribs: Contribution[],
-  newContribs: Contribution[],
-  matchingAmount: number,
-  grantId: string,
-) {
-  const matching = calculateQuadraticMatching(existingContribs, matchingAmount);
-  const matchingWithCheckouts = calculateQuadraticMatching(
-    [...existingContribs, ...newContribs],
-    matchingAmount,
-  );
-
-  return (matchingWithCheckouts[grantId] ?? 0) - (matching[grantId] ?? 0);
-}
