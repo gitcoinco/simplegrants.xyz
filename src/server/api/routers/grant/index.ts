@@ -39,12 +39,17 @@ export const grantRouter = createTRPCRouter({
     }),
 
   funding: publicProcedure
-    .input(z.object({ ids: z.array(z.string()) }))
+    .input(z.object({ ids: z.array(z.string()) }).optional())
     .query(({ ctx, input }) =>
-      ctx.db.contribution.findMany({
-        where: { grantId: { in: input.ids }, status: "success" },
-        select: { amount: true },
-      }),
+      ctx.db.contribution
+        .aggregate({
+          where: {
+            grantId: input ? { in: input.ids } : undefined,
+            status: "success",
+          },
+          _sum: { amount: true },
+        })
+        .then((r) => r._sum),
     ),
 
   delete: protectedProcedure

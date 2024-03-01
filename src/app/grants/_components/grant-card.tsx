@@ -1,8 +1,10 @@
 "use client";
 import type { Grant } from "@prisma/client";
+import { Shapes } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo } from "react";
+import { Badge } from "~/components/ui/badge";
+import { Skeleton } from "~/components/ui/skeleton";
 import { api } from "~/trpc/react";
 import { formatMoney } from "~/utils/formatMoney";
 
@@ -18,21 +20,30 @@ export function GrantCard({
   if (!grant) return null;
   const { id, name, image } = grant;
   return (
-    <Link href={`/grants/${id}`} className="min-h-72 border">
+    <Link href={`/grants/${id}`} className="min-h-72 rounded-xl border">
       <div className="relative aspect-video">
         <Image
           alt={name}
           src={image}
           sizes="500px"
           fill
-          style={{
-            objectFit: "cover",
-          }}
+          className="rounded-t-xl"
+          style={{ objectFit: "cover" }}
         />
       </div>
-      <div className="p-2">
-        <h3 className="truncate text-xl font-semibold">{name}</h3>
-        <FundedAmount grantId={grant.id} />
+      <div className="space-y-2 px-2 py-3">
+        <h3 className="truncate text-lg font-semibold">{name}</h3>
+        <div className="flex items-center gap-2">
+          <div className="text-xl font-semibold">
+            <FundedAmount grantId={id} />
+          </div>
+          <div>raised</div>
+        </div>
+        <div className="flex flex-wrap gap-1">
+          <Badge>
+            <Shapes className="size-4" />2 rounds
+          </Badge>
+        </div>
       </div>
     </Link>
   );
@@ -40,11 +51,13 @@ export function GrantCard({
 
 function FundedAmount({ grantId = "" }) {
   const contributions = api.grant.funding.useQuery({ ids: [grantId] });
-
-  const funding = useMemo(
-    () => contributions.data?.reduce((sum, x) => (sum += x.amount), 0) ?? 0,
-    [contributions.data],
+  const amount = contributions.data?.amount ?? 0;
+  return (
+    <Skeleton
+      className="h-4 w-8 bg-gray-300"
+      isLoading={contributions.isLoading}
+    >
+      {formatMoney(amount, "usd")}
+    </Skeleton>
   );
-
-  return <>{formatMoney(funding, "usd")}</>;
 }

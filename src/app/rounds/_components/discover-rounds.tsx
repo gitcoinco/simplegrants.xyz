@@ -1,6 +1,6 @@
 "use client";
 import type { Application, Round } from "@prisma/client";
-import { Clock, FunctionSquare } from "lucide-react";
+import { Hammer, Clock, FunctionSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { LoadingGrid } from "~/components/loading-grid";
@@ -66,31 +66,28 @@ function RoundCard({
           sizes="500px"
           fill
           className="rounded-t-xl"
-          style={{
-            objectFit: "cover",
-          }}
+          style={{ objectFit: "cover" }}
         />
       </div>
       <div className="space-y-2 px-2 py-3">
         <h3 className="truncate text-lg font-semibold">{name}</h3>
+        <div className="flex items-center gap-2 text-sm">
+          <Clock className="size-4" />
+          {formatDate(startsAt)} - {formatDate(endsAt)}
+        </div>
         <div className="flex items-center gap-2">
           <div className="text-xl font-semibold">
             {formatMoney(fundedAmount, currency)}
           </div>
           <div>funded</div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="text-xl font-semibold">{applications.length}</div>
-          <div>grants</div>
-        </div>
         <div className="flex flex-wrap gap-1">
+          <Badge>
+            <Hammer className="size-4" /> {applications.length} grants
+          </Badge>
           <Badge>
             <FunctionSquare className="size-4" />
             {distributionTypeLabels[distributionType]}
-          </Badge>
-          <Badge>
-            <Clock className="size-4" /> {formatDate(startsAt)} -{" "}
-            {formatDate(endsAt)}
           </Badge>
         </div>
       </div>
