@@ -4,17 +4,22 @@ import { TransferType, stripe } from "~/server/stripe";
 import { env } from "~/env";
 import { db } from "~/server/db";
 
-async function handler(req: NextRequest) {
+async function handler(
+  req: NextRequest,
+  { params }: { params: { type?: "connect" } },
+) {
   try {
+    // Find the correct Stripe Webhook secret based on the route
+    const whSecret =
+      params.type === "connect"
+        ? env.STRIPE_WEBHOOK_SECRET_CONNECT
+        : env.STRIPE_WEBHOOK_SECRET;
+
     const body = await req.text();
 
     const signature = headers().get("stripe-signature") ?? "";
 
-    const event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      env.STRIPE_WEBHOOK_SECRET,
-    );
+    const event = stripe.webhooks.constructEvent(body, signature, whSecret);
 
     if (event.type === "payment_intent.succeeded") {
       const { metadata, transfer_group } = event.data.object;
