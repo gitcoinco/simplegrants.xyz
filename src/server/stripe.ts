@@ -23,10 +23,15 @@ export async function createCheckout(
   }: Checkout,
   stripe: Stripe,
 ) {
+  const baseUrl =
+    process.env.NODE_ENV === "development"
+      ? getBaseUrl()
+      : "https://simplegrants.xyz";
+
   return stripe.checkout.sessions.create(
     {
       mode: "payment",
-      success_url: `${getBaseUrl()}/${successUrl}?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${baseUrl}/${successUrl}?session_id={CHECKOUT_SESSION_ID}`,
       payment_method_types: ["card"],
       customer_email: email,
       payment_intent_data: {
