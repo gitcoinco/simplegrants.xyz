@@ -13,7 +13,7 @@ export function GrantCard({
   isLoading,
 }: {
   grant?: Grant;
-  isLoading: boolean;
+  isLoading?: boolean;
 }) {
   if (isLoading)
     return <div className="h-72 animate-pulse rounded-xl bg-gray-100" />;

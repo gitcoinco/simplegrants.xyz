@@ -12,6 +12,16 @@ export const sessionRouter = createTRPCRouter({
   grants: protectedProcedure.query(({ ctx }) =>
     ctx.db.grant.findMany({
       where: { userId: ctx?.user.id },
+      orderBy: { name: "asc" },
+    }),
+  ),
+  contributions: protectedProcedure.query(({ ctx }) =>
+    ctx.db.contribution.findMany({
+      where: { userId: ctx?.user.id, status: "success" },
+      orderBy: { updatedAt: "desc" },
+      include: {
+        grant: true,
+      },
     }),
   ),
 });
