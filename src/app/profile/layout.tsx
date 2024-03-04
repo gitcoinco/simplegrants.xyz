@@ -6,6 +6,7 @@ import { api } from "~/trpc/server";
 import { ConnectStripe } from "./_components/connect-stripe";
 import { SignOutButton } from "../(auth)/_components/sign-out";
 import { ProfileTabs } from "./_components/tabs";
+import { PageSection } from "../(layout)/_components/page-section";
 
 export default async function ProfileLayout({ children }: PropsWithChildren) {
   const profile = await api.user.get.query();
@@ -14,27 +15,30 @@ export default async function ProfileLayout({ children }: PropsWithChildren) {
   }
 
   return (
-    <div className="md:flex">
-      <div className="w-96">
-        <h1 className="text-2xl font-bold">Profile</h1>
-        <Image
-          width={96}
-          height={96}
-          className="rounded-full"
-          src={profile.imageUrl}
-          alt={profile.firstName!}
-        />
-        <h3 className="text-lg font-semibold">{profile.firstName}</h3>
-        <div>{profile.emailAddresses[0]?.emailAddress}</div>
+    <PageSection title="Profile">
+      <div className="md:flex">
+        <div className="w-80">
+          <Image
+            width={96}
+            height={96}
+            className="rounded-full"
+            src={profile.imageUrl}
+            alt={profile.firstName!}
+          />
+          <h3 className="mt-4 text-lg font-semibold">{profile.firstName}</h3>
+          <div>{profile.emailAddresses[0]?.emailAddress}</div>
 
-        <ConnectStripe stripeAccount={profile.privateMetadata?.stripeAccount} />
-        <SignOutButton />
-      </div>
+          <ConnectStripe
+            stripeAccount={profile.privateMetadata?.stripeAccount}
+          />
+          <SignOutButton />
+        </div>
 
-      <div className="flex-1">
-        <ProfileTabs />
-        {children}
+        <div className="flex-1">
+          <ProfileTabs />
+          {children}
+        </div>
       </div>
-    </div>
+    </PageSection>
   );
 }
