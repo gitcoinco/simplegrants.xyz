@@ -9,8 +9,8 @@ async function handler(req: NextRequest) {
 
     const rounds = await db.round.findMany({
       where: {
-        startsAt: { gte: now },
-        endsAt: { lte: now },
+        startsAt: { lte: now },
+        endsAt: { gte: now },
         stripeAccount: { not: undefined },
       },
     });
