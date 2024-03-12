@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { type ComponentProps } from "react";
 import { ShoppingCart, UserIcon } from "lucide-react";
-import { currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs";
 
 import { Button } from "~/components/ui/button";
 import { SignInButton } from "~/app/(auth)/_components/sign-in";

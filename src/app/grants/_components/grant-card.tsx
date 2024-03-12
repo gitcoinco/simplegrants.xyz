@@ -15,6 +15,10 @@ export function GrantCard({
   grant?: Grant;
   isLoading?: boolean;
 }) {
+  const rounds = api.grant.rounds.useQuery(
+    { ids: [String(grant?.id)] },
+    { enabled: Boolean(grant?.id) },
+  );
   if (isLoading)
     return <div className="h-72 animate-pulse rounded-xl bg-gray-100" />;
   if (!grant) return null;
@@ -41,7 +45,8 @@ export function GrantCard({
         </div>
         <div className="flex flex-wrap gap-1">
           <Badge>
-            <Shapes className="size-4" />2 rounds
+            <Shapes className="size-4" />
+            {rounds.data?.length ?? "_"} rounds
           </Badge>
         </div>
       </div>
