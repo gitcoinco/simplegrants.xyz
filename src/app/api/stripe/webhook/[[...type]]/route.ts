@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { TransferType, stripe } from "~/server/stripe";
 import { env } from "~/env";
 import { db } from "~/server/db";
+import type Stripe from "stripe";
 
 async function handler(
   req: NextRequest,
@@ -13,12 +14,20 @@ async function handler(
 
     const signature = headers().get("stripe-signature") ?? "";
 
-    const whSecret =
-      params.type === "connect"
-        ? env.STRIPE_WEBHOOK_SECRET_CONNECT
-        : env.STRIPE_WEBHOOK_SECRET;
-
-    const event = stripe.webhooks.constructEvent(body, signature, whSecret);
+    let event: Stripe.Event;
+    try {
+      event = stripe.webhooks.constructEvent(
+        body,
+        signature,
+        env.STRIPE_WEBHOOK_SECRET,
+      );
+    } catch (error) {
+      event = stripe.webhooks.constructEvent(
+        body,
+        signature,
+        env.STRIPE_WEBHOOK_SECRET_CONNECT,
+      );
+    }
 
     if (event.type === "payment_intent.succeeded") {
       const { metadata, transfer_group } = event.data.object;
