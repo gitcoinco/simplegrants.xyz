@@ -9,7 +9,7 @@ export function GrantSidebar({ id }: { id: string }) {
   const funding = api.grant.funding.useQuery({ ids: [id] });
   const funders = api.grant.funders.useQuery({ ids: [id] });
   const rounds = api.grant.rounds.useQuery({ ids: [id] });
-  console.log(rounds.data);
+
   return (
     <div className=" sm:p-4 md:w-96">
       <div className="mb-8 space-y-8">
