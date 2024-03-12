@@ -57,7 +57,7 @@ function RoundCard({
     <Link href={`/rounds/${id}`} className="min-h-72 rounded-xl border">
       <div className="relative aspect-video ">
         <Badge className="absolute right-2 top-2 z-10">
-          Ends in {endsIn(endsAt)}
+          {endsIn(endsAt, ["Ends", "Ended"])}
         </Badge>
 
         <Image
