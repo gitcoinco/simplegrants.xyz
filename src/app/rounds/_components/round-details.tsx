@@ -1,7 +1,9 @@
 "use client";
 import type { Round } from "@prisma/client";
+import { format } from "date-fns";
 import Image from "next/image";
 import { Markdown } from "~/components/ui/markdown";
+import { formatDate } from "~/utils/date";
 import { formatMoney } from "~/utils/formatMoney";
 
 export function RoundDetails({
@@ -11,9 +13,14 @@ export function RoundDetails({
   currency,
   description,
   stripeAccount,
+  startsAt,
+  endsAt,
 }: Round) {
   return (
     <div className="mb-8">
+      <div>
+        {formatDate(startsAt)} - {formatDate(endsAt)}
+      </div>
       <div className="relative mb-4 h-80 flex-1">
         <Image
           alt={name}
