@@ -67,16 +67,11 @@ export const grantRouter = createTRPCRouter({
   rounds: publicProcedure
     .input(z.object({ ids: z.array(z.string()) }).optional())
     .query(({ ctx, input }) => {
-      const now = new Date();
       return ctx.db.application
         .findMany({
           where: {
             grantId: input ? { in: input.ids } : undefined,
             approvedById: { not: undefined },
-            round: {
-              startsAt: { lte: now },
-              endsAt: { gte: now },
-            },
           },
           select: {
             round: {
