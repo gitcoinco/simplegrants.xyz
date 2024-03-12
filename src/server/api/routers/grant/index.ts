@@ -75,7 +75,7 @@ export const grantRouter = createTRPCRouter({
           },
           select: {
             round: {
-              select: { id: true, name: true },
+              select: { id: true, name: true, endsAt: true },
             },
           },
         })

@@ -20,15 +20,31 @@ export function GrantSidebar({ id }: { id: string }) {
         <AddToCartButton grantId={id} />
         <div>
           <h3 className="text-lg font-semibold">In rounds</h3>
-          {rounds.data?.map((round) => (
-            <A
-              key={round.id}
-              href={`/rounds/${round.id}`}
-              className="block truncate"
-            >
-              {round.name}
-            </A>
-          ))}
+          {rounds.data
+            ?.filter((round) => round.endsAt > new Date())
+            .map((round) => (
+              <A
+                key={round.id}
+                href={`/rounds/${round.id}`}
+                className="block truncate"
+              >
+                {round.name}
+              </A>
+            ))}
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold">Past rounds</h3>
+          {rounds.data
+            ?.filter((round) => round.endsAt < new Date())
+            .map((round) => (
+              <A
+                key={round.id}
+                href={`/rounds/${round.id}`}
+                className="block truncate"
+              >
+                {round.name}
+              </A>
+            ))}
         </div>
       </div>
     </div>
