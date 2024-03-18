@@ -38,7 +38,7 @@ export const roundRouter = createTRPCRouter({
         include: {
           applications: {
             where: {
-              approvedById: { not: undefined },
+              approvedById: { not: null },
             },
           },
         },

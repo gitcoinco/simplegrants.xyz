@@ -28,7 +28,7 @@ export const contributionRouter = createTRPCRouter({
             },
           },
           where: {
-            applications: { some: { approvedById: { not: undefined } } },
+            applications: { some: { approvedById: { not: null } } },
             startsAt: { lte: now },
             endsAt: { gte: now },
           },

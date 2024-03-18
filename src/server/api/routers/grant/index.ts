@@ -71,7 +71,7 @@ export const grantRouter = createTRPCRouter({
         .findMany({
           where: {
             grantId: input ? { in: input.ids } : undefined,
-            approvedById: { not: undefined },
+            approvedById: { not: null },
           },
           select: {
             round: {

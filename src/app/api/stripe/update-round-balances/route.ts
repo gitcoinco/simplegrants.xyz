@@ -11,7 +11,7 @@ async function handler(req: NextRequest) {
       where: {
         startsAt: { lte: now },
         endsAt: { gte: now },
-        stripeAccount: { not: undefined },
+        stripeAccount: { not: null },
       },
     });
     console.log(
