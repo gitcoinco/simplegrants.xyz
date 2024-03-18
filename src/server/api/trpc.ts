@@ -17,6 +17,8 @@ import { db } from "~/server/db";
 import { stripe } from "../stripe";
 import { currentUser, type User } from "@clerk/nextjs/server";
 import { clerkClient } from "@clerk/nextjs";
+import { resend } from "../resend";
+import { Resend } from "resend";
 
 /**
  * 1. CONTEXT
@@ -34,6 +36,7 @@ export interface CreateContextOptions {
   user: User | null;
   db: PrismaClient;
   stripe: Stripe;
+  resend: Resend;
   clerk: typeof clerkClient;
 }
 export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
@@ -45,6 +48,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     db,
     stripe,
     user,
+    resend,
     clerk: clerkClient,
   };
 };
