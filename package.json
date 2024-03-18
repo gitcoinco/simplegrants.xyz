@@ -40,6 +40,7 @@
     "react-markdown": "^9.0.1",
     "react-number-format": "^5.3.3",
     "react-use": "^17.5.0",
+    "resend": "^3.2.0",
     "server-only": "^0.0.1",
     "stripe": "^14.16.0",
     "superjson": "^2.2.1",

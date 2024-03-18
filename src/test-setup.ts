@@ -30,6 +30,14 @@ vi.mock("~/server/__mocks__/clerk", async () => {
   return { ...actual };
 });
 
+vi.mock("~/server/__mocks__/resend", async () => {
+  const actual = await vi.importActual<
+    typeof import("~/server/__mocks__/resend")
+  >("~/server/__mocks__/resend");
+
+  return { ...actual };
+});
+
 export const mockUserCreated = {
   id: "test-user",
   email: "test@example.com",

@@ -1,11 +1,9 @@
-import type { Prisma, PrismaClient } from "@prisma/client";
-import { z } from "zod";
+import type { PrismaClient } from "@prisma/client";
 
 import {
   type CreateContextOptions,
   createTRPCRouter,
   protectedProcedure,
-  publicProcedure,
 } from "~/server/api/trpc";
 import {
   ZApplicationApproveSchema,
@@ -15,6 +13,7 @@ import {
 import { getGrant } from "../grant";
 import { TRPCError } from "@trpc/server";
 import { getRound } from "../round";
+import { sendGrantAppliesToRoundEmail } from "../../emails";
 
 export async function getApplication(id: string, db: PrismaClient) {
   return db.application.findFirst({ where: { id } });
@@ -66,6 +65,8 @@ export const applicationRouter = createTRPCRouter({
     .input(ZApplicationCreateSchema)
     .mutation(async ({ ctx, input: { grantId, roundId } }) => {
       await verifyGrantOwnership(grantId, ctx);
+
+      sendGrantAppliesToRoundEmail({ grantId, roundId }).catch(console.log);
 
       return ctx.db.application.create({
         data: { grantId, roundId, userId: ctx.user.id },
