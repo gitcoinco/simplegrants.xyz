@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { ClerkProvider } from "@clerk/nextjs";
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 import { Footer } from "./(layout)/_components/footer";
 import { Header } from "./(layout)/_components/header";
 
@@ -36,6 +38,7 @@ export default function RootLayout({
             <Footer />
           </TRPCReactProvider>
         </body>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
       </html>
     </ClerkProvider>
   );
