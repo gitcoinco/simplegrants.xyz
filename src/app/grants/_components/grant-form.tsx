@@ -1,11 +1,12 @@
 "use client";
 
 import { type SubmitHandler } from "react-hook-form";
+import { A } from "~/components/ui/a";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
 import { Fieldset } from "~/components/ui/form/fieldset";
 import { ImageUpload, type UploadFn } from "~/components/ui/form/image-upload";
-import { Input, Textarea } from "~/components/ui/form/inputs";
+import { Input, Select, Textarea } from "~/components/ui/form/inputs";
 import {
   ZGrantCreateInputSchema,
   type TGrantCreateInputSchema,
@@ -42,9 +43,19 @@ export function GrantForm({
         <Textarea rows={6} />
       </Fieldset>
 
-      <Fieldset label="Stripe account" name="stripeAccount">
-        <Input />
-      </Fieldset>
+      <div className="items-end gap-2 sm:flex">
+        <Fieldset label="Stripe account" name="stripeAccount">
+          <Input />
+        </Fieldset>
+        <Fieldset label="Currency" name="currency">
+          <Select>
+            <option value="usd">USD</option>
+          </Select>
+        </Fieldset>
+      </div>
+      <div className="">
+        <A href={`/profile`}>Connect your Stripe account in your profile</A>
+      </div>
 
       <div className="flex justify-end">
         <Button variant="primary" isLoading={isLoading} type="submit">
