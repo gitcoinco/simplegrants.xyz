@@ -43,17 +43,17 @@ export function RoundApplicationsApprove({
           approve.mutate(values);
         }}
       >
-        <h3 className="text-xl font-semibold">Approve Grants</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-xl font-semibold">Approve Grants</h3>
+          <ApproveButton isLoading={approve.isLoading} />
+        </div>
         <input type="hidden" value={roundId} name="roundId" />
-        <div className="mb-2 max-h-52 divide-y overflow-auto rounded border">
+        <div className="mb-2 divide-y overflow-x-auto rounded border">
           {applications.map((application) => (
             <ApplicationCheckbox key={application.id} {...application} />
           ))}
         </div>
 
-        <div className="flex justify-end">
-          <ApproveButton isLoading={approve.isLoading} />
-        </div>
         <pre className="text-red-600">{approve.error?.message}</pre>
       </Form>
     </div>
