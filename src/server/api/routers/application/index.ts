@@ -66,9 +66,7 @@ export const applicationRouter = createTRPCRouter({
     .mutation(async ({ ctx, input: { grantId, roundId } }) => {
       await verifyGrantOwnership(grantId, ctx);
 
-      sendGrantAppliesToRoundEmail({ grantId, roundId }, ctx).catch(
-        console.log,
-      );
+      sendGrantAppliesToRoundEmail({ grantId, roundId }).catch(console.log);
 
       return ctx.db.application.create({
         data: { grantId, roundId, userId: ctx.user.id },
