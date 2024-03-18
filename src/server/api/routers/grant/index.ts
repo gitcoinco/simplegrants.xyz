@@ -33,7 +33,10 @@ export const grantRouter = createTRPCRouter({
     .input(ZFilterSchema)
     .query(async ({ ctx, input: { sortBy, order, search } }) => {
       return ctx.db.grant.findMany({
-        where: { name: { contains: search, mode: "insensitive" } },
+        where: {
+          name: { contains: search, mode: "insensitive" },
+          isApproved: true,
+        },
         orderBy: { [sortBy]: order },
       });
     }),

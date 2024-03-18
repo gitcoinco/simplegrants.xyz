@@ -24,6 +24,7 @@ model Round {
     endsAt           DateTime
     userId           String
     distributionType String
+    isApproved       Boolean  @default(false)
 
     fundedAmount Int @default(0)
 
@@ -45,6 +46,7 @@ model Grant {
     image         String
     userId        String
     stripeAccount String?
+    isApproved    Boolean @default(false)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

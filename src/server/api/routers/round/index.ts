@@ -33,7 +33,10 @@ export const roundRouter = createTRPCRouter({
     .input(ZFilterSchema)
     .query(({ input: { sortBy, search, order }, ctx }) => {
       return ctx.db.round.findMany({
-        where: { name: { contains: search, mode: "insensitive" } },
+        where: {
+          name: { contains: search, mode: "insensitive" },
+          isApproved: true,
+        },
         orderBy: { [sortBy]: order },
         include: {
           applications: {
