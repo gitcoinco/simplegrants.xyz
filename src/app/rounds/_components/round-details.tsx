@@ -1,18 +1,20 @@
 "use client";
 import type { Round } from "@prisma/client";
-import { format } from "date-fns";
 import Image from "next/image";
+import { tv } from "tailwind-variants";
+import { createComponent } from "~/components/ui";
 import { Markdown } from "~/components/ui/markdown";
+import { api } from "~/trpc/react";
 import { formatDate } from "~/utils/date";
 import { formatMoney } from "~/utils/formatMoney";
 
 export function RoundDetails({
+  id,
   name,
   image,
   fundedAmount,
   currency,
   description,
-  stripeAccount,
   startsAt,
   endsAt,
 }: Round) {
@@ -32,17 +34,44 @@ export function RoundDetails({
         />
       </div>
       <div className="mb-4 gap-4 md:flex">
-        {stripeAccount && (
-          <div className="mx-auto">
-            <div className="text-sm text-gray-600">Funded amount</div>
-            <div className="text-center text-2xl font-semibold leading-none text-green-500">
-              {formatMoney(fundedAmount, currency)}
-            </div>
-          </div>
-        )}
+        <RoundStats
+          roundId={id}
+          fundedAmount={fundedAmount}
+          currency={currency}
+        />
       </div>
 
       <Markdown>{description}</Markdown>
     </div>
   );
 }
+
+function RoundStats({ roundId = "", fundedAmount = 0, currency = "" }) {
+  const grants = api.grant.approved.useQuery({ roundId });
+  const contributors = api.contribution.countForRound.useQuery({ roundId });
+
+  return (
+    <div className="mx-auto flex gap-8">
+      <div>
+        <StatLabel>Funded amount</StatLabel>
+        <StatValue>{formatMoney(fundedAmount, currency)}</StatValue>
+      </div>
+      <div>
+        <StatLabel>Contributors</StatLabel>
+        <StatValue>{contributors.data?.length}</StatValue>
+      </div>
+      <div>
+        <StatLabel>Grants</StatLabel>
+        <StatValue>{grants.data?.length}</StatValue>
+      </div>
+    </div>
+  );
+}
+
+const StatLabel = createComponent("div", tv({ base: "text-sm text-gray-600" }));
+const StatValue = createComponent(
+  "div",
+  tv({
+    base: "text-center text-2xl font-semibold leading-none text-green-500",
+  }),
+);

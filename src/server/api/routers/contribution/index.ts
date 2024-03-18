@@ -72,4 +72,20 @@ export const contributionRouter = createTRPCRouter({
       );
       return { matching, matchingCheckout };
     }),
+
+  countForRound: protectedProcedure
+    .input(z.object({ roundId: z.string() }))
+    .query(async ({ input: { roundId }, ctx }) => {
+      const grantIds = await ctx.db.application
+        .findMany({
+          where: { roundId, approvedById: { not: null } },
+          select: { grantId: true },
+        })
+        .then((applications) => applications.map((a) => a.grantId));
+
+      return ctx.db.contribution.groupBy({
+        by: ["grantId"],
+        where: { grantId: { in: grantIds } },
+      });
+    }),
 });

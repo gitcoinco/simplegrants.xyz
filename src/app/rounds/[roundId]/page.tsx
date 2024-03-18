@@ -7,7 +7,6 @@ import { api } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
 import { RoundApply } from "../_components/round-apply";
 import { PageSection } from "~/app/(layout)/_components/page-section";
-import { DiscoverGrants } from "~/app/grants/_components/discover-grants";
 import { RoundDetails } from "../_components/round-details";
 import { RoundGrants } from "../_components/round-grants";
 
