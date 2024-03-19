@@ -14,7 +14,7 @@ import { Checkbox } from "~/components/ui/form/inputs";
 
 type GenericItem = { id: string; name: string };
 
-type DeleteHandler = (params: { ids: string[] }) => Promise<unknown>;
+type DeleteHandler = (params: { ids: string[] }) => void;
 export function ApproveForm<T extends GenericItem>({
   isLoading,
   items,
