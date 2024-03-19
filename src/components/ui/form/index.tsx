@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export type SubmitHandler<S extends z.Schema> = (
   values: z.infer<S>,
   form?: UseFormReturn<z.infer<S>>,
-) => Promise<unknown>;
+) => void | Promise<unknown>;
 
 interface FormProps<S extends z.Schema>
   extends PropsWithChildren<{ className?: string }> {
