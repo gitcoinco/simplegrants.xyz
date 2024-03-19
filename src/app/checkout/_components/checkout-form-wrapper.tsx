@@ -45,9 +45,7 @@ export default function CheckoutFormWrapper() {
       <Form
         schema={ZDonateInputSchema}
         defaultValues={defaultValues}
-        onSubmit={(data) => {
-          donate.mutate(data);
-        }}
+        onSubmit={(data) => donate.mutate(data)}
       >
         <CheckoutForm isLoading={donate.isLoading} />
         <pre className="text-red-600">{error}</pre>

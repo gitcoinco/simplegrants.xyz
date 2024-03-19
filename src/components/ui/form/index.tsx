@@ -3,21 +3,16 @@ import { type PropsWithChildren } from "react";
 import {
   FormProvider,
   useForm,
+  type SubmitHandler,
   type UseFormProps,
-  type UseFormReturn,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-export type SubmitHandler<S extends z.Schema> = (
-  values: z.infer<S>,
-  form?: UseFormReturn<z.infer<S>>,
-) => void | Promise<unknown>;
 
 interface FormProps<S extends z.Schema>
   extends PropsWithChildren<{ className?: string }> {
   defaultValues?: UseFormProps<z.infer<S>>["defaultValues"];
   schema: S;
-  onSubmit: SubmitHandler<S>;
+  onSubmit: SubmitHandler<z.infer<S>>;
 }
 export function Form<S extends z.Schema>({
   defaultValues,
@@ -35,10 +30,7 @@ export function Form<S extends z.Schema>({
   console.log(errors);
   return (
     <FormProvider {...form}>
-      <form
-        className={className}
-        onSubmit={form.handleSubmit((values) => onSubmit(values, form))}
-      >
+      <form className={className} onSubmit={form.handleSubmit(onSubmit)}>
         {children}
       </form>
       <pre>{Object.keys(errors).length ? "error" : null}</pre>

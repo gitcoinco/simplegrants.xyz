@@ -17,8 +17,8 @@ export function ApproveRounds({ rounds }: { rounds: Grant[] }) {
       type="rounds"
       isLoading={approve.isLoading}
       items={rounds}
-      onSubmit={(values) => approve.mutateAsync(values)}
-      onDelete={(values) => remove.mutateAsync(values)}
+      onSubmit={(values) => approve.mutate(values)}
+      onDelete={(values) => remove.mutate(values)}
     />
   );
 }

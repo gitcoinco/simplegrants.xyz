@@ -17,8 +17,8 @@ export function ApproveGrants({ grants }: { grants: Grant[] }) {
       type="grants"
       isLoading={approve.isLoading}
       items={grants}
-      onSubmit={(values) => approve.mutateAsync(values)}
-      onDelete={(values) => remove.mutateAsync(values)}
+      onSubmit={(values) => approve.mutate(values)}
+      onDelete={(values) => remove.mutate(values)}
     />
   );
 }

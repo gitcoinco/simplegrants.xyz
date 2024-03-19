@@ -39,9 +39,7 @@ export function RoundApplicationsApprove({
           ids: [],
         }}
         schema={ZApplicationApproveSchema}
-        onSubmit={(values, form) =>
-          approve.mutateAsync(values).then(() => form?.reset())
-        }
+        onSubmit={(values) => approve.mutate(values)}
       >
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-semibold">Approve Grants</h3>

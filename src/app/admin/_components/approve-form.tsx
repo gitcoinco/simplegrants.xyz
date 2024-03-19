@@ -1,13 +1,16 @@
 "use client";
-import { Form, type SubmitHandler } from "~/components/ui/form";
-import { List, ListItem } from "~/components/ui/list";
-import { useFormContext } from "react-hook-form";
-import { ZApproveSchema } from "~/server/api/routers/admin/admin.schemas";
-import { Button } from "~/components/ui/button";
+import Link from "next/link";
 import { CheckCheck, Trash2 } from "lucide-react";
+import { type SubmitHandler, useFormContext } from "react-hook-form";
+import { Form } from "~/components/ui/form";
+import { List, ListItem } from "~/components/ui/list";
+import {
+  type TApproveSchema,
+  ZApproveSchema,
+} from "~/server/api/routers/admin/admin.schemas";
+import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/form/label";
 import { Checkbox } from "~/components/ui/form/inputs";
-import Link from "next/link";
 
 type GenericItem = { id: string; name: string };
 
@@ -22,14 +25,14 @@ export function ApproveForm<T extends GenericItem>({
   isLoading: boolean;
   items: T[];
   type: "grants" | "rounds";
-  onSubmit: SubmitHandler<typeof ZApproveSchema>;
+  onSubmit: SubmitHandler<TApproveSchema>;
   onDelete: DeleteHandler;
 }) {
   return (
     <Form
       defaultValues={{ ids: [] }}
       schema={ZApproveSchema}
-      onSubmit={(values, form) => onSubmit(values).then(() => form?.reset())}
+      onSubmit={onSubmit}
       className="mx-auto max-w-screen-sm space-y-2"
     >
       <div className="flex justify-end gap-2">
