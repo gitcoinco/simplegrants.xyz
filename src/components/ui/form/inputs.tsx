@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 import { createComponent } from "..";
 import { forwardRef, type ComponentPropsWithRef } from "react";
-import { Search } from "lucide-react";
+import { Calendar, Search } from "lucide-react";
 
 const inputBase = ["rounded"];
 export const Input = createComponent(
@@ -74,9 +74,23 @@ export const SearchInput = forwardRef(function SearchInput(
   ref,
 ) {
   return (
-    <InputWrapper className="">
+    <InputWrapper>
       <InputIcon>
         <Search className="size-4" />
+      </InputIcon>
+      <Input type="search" ref={ref} {...props} className="pl-10" />
+    </InputWrapper>
+  );
+});
+
+export const DateInput = forwardRef(function DateInput(
+  { ...props }: ComponentPropsWithRef<typeof Input>,
+  ref,
+) {
+  return (
+    <InputWrapper>
+      <InputIcon>
+        <Calendar className="size-4" />
       </InputIcon>
       <Input type="search" ref={ref} {...props} className="pl-10" />
     </InputWrapper>

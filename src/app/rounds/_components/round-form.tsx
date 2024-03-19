@@ -4,6 +4,7 @@ import { type SubmitHandler } from "react-hook-form";
 import { A } from "~/components/ui/a";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
+import { DatePicker } from "~/components/ui/form/date-picker";
 import { Fieldset } from "~/components/ui/form/fieldset";
 import { ImageUpload, type UploadFn } from "~/components/ui/form/image-upload";
 import { Input, Select, Textarea } from "~/components/ui/form/inputs";
@@ -55,10 +56,10 @@ export function RoundForm({
       </Fieldset>
       <div className="mb-2 gap-2 sm:flex">
         <Fieldset label="Starts at" name="startsAt">
-          <Input />
+          <DatePicker name="startsAt" />
         </Fieldset>
         <Fieldset label="Ends at" name="endsAt">
-          <Input />
+          <DatePicker name="endsAt" />
         </Fieldset>
       </div>
 
