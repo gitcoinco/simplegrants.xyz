@@ -33,8 +33,10 @@ export default function RoundFormWrapper({
   const defaultValues = {
     ...round,
     stripeAccount,
-    startsAt: dateToInputDate(round?.startsAt ?? new Date()),
-    endsAt: dateToInputDate(round?.endsAt),
+    startsAt: round?.startsAt ?? new Date(),
+    endsAt: round?.endsAt,
+    // startsAt: dateToInputDate(round?.startsAt ?? new Date()),
+    // endsAt: dateToInputDate(round?.endsAt),
   } as TRoundUpdateInputSchema;
 
   return (

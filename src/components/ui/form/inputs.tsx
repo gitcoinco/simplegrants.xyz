@@ -92,7 +92,13 @@ export const DateInput = forwardRef(function DateInput(
       <InputIcon>
         <Calendar className="size-4" />
       </InputIcon>
-      <Input type="search" ref={ref} {...props} className="pl-10" />
+      <Input
+        type="search"
+        autocomplete={"off"}
+        ref={ref}
+        {...props}
+        className="pl-10"
+      />
     </InputWrapper>
   );
 });

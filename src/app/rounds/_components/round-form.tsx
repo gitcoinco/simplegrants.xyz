@@ -28,6 +28,7 @@ export function RoundForm({
   upload,
   onSubmit,
 }: Props) {
+  console.log("def", defaultValues);
   return (
     <Form
       className="mx-auto flex max-w-screen-sm flex-col gap-2"
@@ -56,7 +57,7 @@ export function RoundForm({
       </Fieldset>
       <div className="mb-2 gap-2 sm:flex">
         <Fieldset label="Starts at" name="startsAt">
-          <DatePicker name="startsAt" />
+          <DatePicker name="startsAt" minDate={new Date()} />
         </Fieldset>
         <Fieldset label="Ends at" name="endsAt">
           <DatePicker name="endsAt" />
