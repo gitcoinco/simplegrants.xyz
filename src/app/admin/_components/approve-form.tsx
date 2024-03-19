@@ -133,9 +133,9 @@ function DeleteButton({
       icon={Trash2}
       isLoading={isLoading}
       variant="danger"
-      onClick={async () => {
+      onClick={() => {
         if (window.confirm("Are you sure you want to delete these?")) {
-          await onDelete({ ids: selected }).then(() => reset({ ids: [] }));
+          onDelete({ ids: selected });
         }
       }}
       disabled={!selectedCount || isLoading}
