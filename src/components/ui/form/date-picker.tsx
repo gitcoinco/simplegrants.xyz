@@ -14,7 +14,7 @@ export const DatePicker = forwardRef(function DatePicker({
   return (
     <Controller
       control={control}
-      name={name as string}
+      name={String(name)}
       render={({ field }) => (
         <>
           <ReactDatePicker
