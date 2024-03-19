@@ -8,7 +8,7 @@ import { DateInput } from "./inputs";
 export const DatePicker = forwardRef(function DatePicker({
   name,
   ...props
-}: ComponentPropsWithRef<typeof ReactDatePicker>) {
+}: Partial<ComponentPropsWithRef<typeof ReactDatePicker>>) {
   const { control } = useFormContext();
 
   return (
@@ -19,11 +19,9 @@ export const DatePicker = forwardRef(function DatePicker({
         <>
           <ReactDatePicker
             {...props}
-            customInput={<DateInput />}
-            containerStyle={{ width: "100%" }}
             {...field}
-            selected={field.value as string}
-            render={<DateInput />}
+            customInput={<DateInput />}
+            selected={field.value as Date}
           />
         </>
       )}
