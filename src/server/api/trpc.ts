@@ -112,3 +112,10 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
     },
   });
 });
+
+export const adminProcedure = t.procedure.use(({ ctx, next }) => {
+  if (!ctx.user?.publicMetadata.admin) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next();
+});

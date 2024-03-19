@@ -1,3 +1,4 @@
+import { adminRouter } from "~/server/api/routers/admin";
 import { applicationRouter } from "~/server/api/routers/application";
 import { contributionRouter } from "~/server/api/routers/contribution";
 import { grantRouter } from "~/server/api/routers/grant";
@@ -14,6 +15,7 @@ import { createTRPCRouter, t } from "~/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  admin: adminRouter,
   application: applicationRouter,
   contribution: contributionRouter,
   grant: grantRouter,

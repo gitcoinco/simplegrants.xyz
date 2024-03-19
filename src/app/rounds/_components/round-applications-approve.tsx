@@ -15,8 +15,8 @@ import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CheckCheck } from "lucide-react";
-import { cn } from "~/utils/cn";
 import { Badge } from "~/components/ui/badge";
+import { List, ListItem } from "~/components/ui/list";
 
 export function RoundApplicationsApprove({
   roundId,
@@ -36,23 +36,43 @@ export function RoundApplicationsApprove({
         className="mx-auto flex max-w-screen-sm flex-col gap-2"
         defaultValues={{
           roundId,
-          applicationIds: [],
+          ids: [],
         }}
         schema={ZApplicationApproveSchema}
-        onSubmit={(values) => {
-          approve.mutate(values);
-        }}
+        onSubmit={(values, form) =>
+          approve.mutateAsync(values).then(() => form?.reset())
+        }
       >
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-semibold">Approve Grants</h3>
           <ApproveButton isLoading={approve.isLoading} />
         </div>
         <input type="hidden" value={roundId} name="roundId" />
-        <div className="mb-2 divide-y overflow-x-auto rounded border">
-          {applications.map((application) => (
-            <ApplicationCheckbox key={application.id} {...application} />
+        <List>
+          {applications.map((item) => (
+            <ListItem
+              as={Label}
+              key={item.id}
+              className="cursor-pointer hover:bg-gray-50"
+            >
+              <div className="flex h-12 items-center gap-2 text-lg font-medium">
+                <SelectCheckbox id={item.id} />
+                {item.grant.name}
+              </div>
+              {item.approvedById ? (
+                <Badge variant="success">Approved</Badge>
+              ) : (
+                <Button
+                  as={Link}
+                  href={`/grants/${item.grant.id}/review`}
+                  target="_blank"
+                >
+                  Review
+                </Button>
+              )}
+            </ListItem>
           ))}
-        </div>
+        </List>
 
         <pre className="text-red-600">{approve.error?.message}</pre>
       </Form>
@@ -60,40 +80,14 @@ export function RoundApplicationsApprove({
   );
 }
 
-function ApplicationCheckbox({
-  id,
-  approvedById,
-  grant,
-}: Application & { grant: Grant }) {
-  const { register } = useFormContext<TApplicationApprove>();
-  return (
-    <Label
-      className={cn("flex items-center justify-between p-4", {
-        ["cursor-pointer hover:bg-gray-50 "]: !approvedById,
-      })}
-    >
-      <div className="flex h-12 items-center gap-2 text-lg font-medium">
-        <Checkbox
-          value={id}
-          className={cn({ ["invisible"]: approvedById })}
-          {...register("applicationIds")}
-          disabled={Boolean(approvedById)}
-        />
-        {grant.name}
-      </div>
-      {approvedById ? (
-        <Badge variant="success">Approved</Badge>
-      ) : (
-        <Button as={Link} href={`/grants/${grant.id}/review`} target="_blank">
-          Review
-        </Button>
-      )}
-    </Label>
-  );
+function SelectCheckbox({ id = "" }) {
+  const { register } = useFormContext();
+  return <Checkbox value={id} {...register("ids")} />;
 }
+
 function ApproveButton({ isLoading = false }) {
   const selected =
-    useFormContext<TApplicationApprove>().watch("applicationIds")?.length || 0;
+    useFormContext<TApplicationApprove>().watch("ids")?.length || 0;
 
   return (
     <Button

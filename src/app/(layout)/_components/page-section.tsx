@@ -5,12 +5,14 @@ import { Button } from "~/components/ui/button";
 
 export function PageSection({
   title,
+  description,
   backLink,
   action,
   children,
 }: PropsWithChildren<{
   backLink?: string;
   title: string;
+  description?: string;
   action?: ReactNode;
 }>) {
   return (
@@ -30,6 +32,7 @@ export function PageSection({
         </div>
         {action}
       </div>
+      {description && <p className="mb-2 text-lg">{description}</p>}
       {children}
     </div>
   );

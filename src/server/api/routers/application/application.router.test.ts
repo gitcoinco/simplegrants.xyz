@@ -64,7 +64,7 @@ describe("Application", async () => {
   describe("Approve Application", async () => {
     type Input = inferProcedureInput<AppRouter["application"]["approve"]>;
     const input: Input = {
-      applicationIds: [mockApplicationCreated.id],
+      ids: [mockApplicationCreated.id],
       roundId: mockRoundCreated.id,
     };
 
@@ -95,7 +95,7 @@ describe("Application", async () => {
       expect(db.application.updateMany).toHaveBeenCalledWith({
         where: {
           roundId: mockRoundCreated.id,
-          id: { in: input.applicationIds },
+          id: { in: input.ids },
         },
         data: { approvedById: mockSession.id },
       });

@@ -75,11 +75,11 @@ export const applicationRouter = createTRPCRouter({
 
   approve: protectedProcedure
     .input(ZApplicationApproveSchema)
-    .mutation(async ({ ctx, input: { applicationIds, roundId } }) => {
+    .mutation(async ({ ctx, input: { ids, roundId } }) => {
       await verifyRoundOwnership(roundId, ctx);
 
       return ctx.db.application.updateMany({
-        where: { roundId, id: { in: applicationIds } },
+        where: { roundId, id: { in: ids } },
         data: { approvedById: ctx.user.id },
       });
     }),

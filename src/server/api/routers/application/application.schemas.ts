@@ -6,7 +6,7 @@ export const ZApplicationCreateSchema = z.object({
 });
 
 export const ZApplicationApproveSchema = z.object({
-  applicationIds: z.array(z.string()),
+  ids: z.array(z.string()),
   roundId: z.string(),
 });
 

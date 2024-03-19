@@ -4,15 +4,15 @@ import { Tab, Tabs } from "~/components/ui/tabs";
 
 const tabs = [
   {
-    href: "/profile",
-    children: "Donations",
+    href: "/admin",
+    children: "Rounds",
   },
   {
-    href: "/profile/grants",
+    href: "/admin/grants",
     children: "Grants",
   },
 ];
-export function ProfileTabs() {
+export function AdminTabs() {
   const path = usePathname();
 
   return (
