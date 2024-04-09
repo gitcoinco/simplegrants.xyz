@@ -17,7 +17,7 @@ export function PageSection({
 }>) {
   return (
     <div>
-      <div className="mb-2 flex flex-wrap items-center justify-between">
+      <div className="my-4 flex flex-wrap items-center justify-between">
         <div className="flex items-center gap-2">
           {backLink && (
             <Button
