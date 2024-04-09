@@ -7,11 +7,11 @@ export default function AboutPage() {
 
 ## Our Mission
 
-At SimpleGrants, we are committed to fostering an equitable and impactful approach to funding diverse projects and initiatives. Our platform leverages the principles of quadratic funding to democratize the distribution of grants, ensuring a fair and community-focused allocation of resources.
+At SimpleGrants, we are committed to enabling anyone to run a Quadratic Funding campaign. Our platform leverages the principles of quadratic funding to democratize the distribution of grants, ensuring a fair, effective, community-focused allocation of resources.
 
 ## What is Quadratic Funding?
 
-Quadratic funding is a mathematical approach to allocate funds in a way that balances the influence of both large and small contributors. This method amplifies the impact of smaller donations, ensuring that the number of contributors is as important as the amount contributed. It's designed to reflect the broader interests of a community, not just those with significant financial power.
+Quadratic funding is a mathematical approach to allocate funds in a way that balances the influence of both large and small contributors. This method amplifies the impact of smaller donations, ensuring that the number of contributors is as important as the amount contributed. It's designed to reflect the broader interests of a community, not just those with significant financial power.  [Learn more about Quadratic Funding](https://wtfisqf.com).
 
 ## How SimpleGrants Works
 
@@ -21,11 +21,11 @@ Quadratic funding is a mathematical approach to allocate funds in a way that bal
 
 - **Quadratic Matching**: At the end of each funding cycle, SimpleGrants calculates the total amount to be granted to each project using the quadratic funding formula. This ensures a balanced and equitable distribution of funds, prioritizing the number of supporters over the total amount raised.
 
-- **Transparency and Accountability**: We maintain a high standard of transparency and accountability. Contributors and project leaders can track funding progress, and we regularly publish reports detailing the allocation and impact of grants.
+- **Multi-Currency Support**: Simple Grants supports USD, EUR, JPY, and any of the 100s of currencies that Stripe supports.
 
 ## Our Values
 
-- **Inclusivity**: We believe in leveling the playing field for all innovators and creators, regardless of their background or resources.
+- **Democracy**: We believe in leveling the playing field for all community memers, regardless of their background or resources.
 
 - **Community-Driven**: Our approach is rooted in the power of community support, valuing collective decisions over individual wealth.
 
@@ -49,11 +49,8 @@ SimpleGrants is run by a dedicated team of professionals with diverse background
 
 For more information, inquiries, or feedback, please [contact us](mailto:contact@simplegrants.xyz).
 
-We look forward to fostering a more equitable and impactful funding landscape together.
+We look forward to fostering a more democratic and impactful funding landscape together.
 
----
-
-SimpleGrants: Funding, Democratically.
      `}</Markdown>
   );
 }
