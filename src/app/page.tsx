@@ -37,14 +37,14 @@ export default async function LandingPage() {
         <Feature
           href={`/rounds/create`}
           title="Create a round"
-          description="Info about what a round is, what it does. Limited time, generally with a theme."
+          description="Create a Quadratic Funding Round to reward community goods in your community."
         >
           <RoundSVG />
         </Feature>
         <Feature
           href={`/grants/create`}
           title="Create a grant"
-          description="Short info about what a grant is and what it does. Funding, idea etc."
+          description="Doing work in a community?  Create a grant and raise $$$ for your work."
         >
           <GrantSVG />
         </Feature>
