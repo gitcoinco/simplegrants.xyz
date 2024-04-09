@@ -48,6 +48,14 @@ export default async function LandingPage() {
         >
           <GrantSVG />
         </Feature>
+
+        <Feature
+          href="mailto:contact@simplegrants.xyz"
+          title="Conctact Us"
+          description="Want to get in touch with the SimpleGrants.xyz team?  Send us an email today."
+        >
+          <GrantSVG />
+        </Feature>
       </section>
 
       <section className="flex flex-col gap-16 py-16">
