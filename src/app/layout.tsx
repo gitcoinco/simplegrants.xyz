@@ -1,6 +1,6 @@
 import "~/styles/globals.css";
 
-import { Inter } from "next/font/google";
+import { Bricolage_Grotesque, Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -9,6 +9,10 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Footer } from "./(layout)/_components/footer";
 import { Header } from "./(layout)/_components/header";
 
+const heading = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -29,7 +33,7 @@ export default function RootLayout({
     <ClerkProvider signInUrl="/sign-in">
       <html lang="en">
         <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
-        <body className={`font-sans ${inter.variable} bg-gray-100`}>
+        <body className={`font-sans ${inter.variable} ${heading.variable}`}>
           <TRPCReactProvider>
             <main className="mx-auto flex min-h-screen max-w-screen-xl flex-col bg-white">
               <Header />

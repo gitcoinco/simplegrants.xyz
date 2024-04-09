@@ -27,6 +27,7 @@ export async function Header() {
             <span className="hidden pr-1 sm:inline">Discover </span>
             Grants
           </NavLink>
+          <NavLink href={"/about"}>About</NavLink>
         </nav>
         <div className="flex items-center gap-2">
           {user ? (

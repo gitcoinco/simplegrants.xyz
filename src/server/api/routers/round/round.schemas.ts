@@ -56,10 +56,12 @@ export enum SortOrder {
 }
 
 export const ZFilterSchema = z.object({
-  search: z.string(),
-  sortBy: z.nativeEnum(SortBy),
-  order: z.nativeEnum(SortOrder),
+  search: z.string().optional(),
+  limit: z.number().optional(),
+  sortBy: z.nativeEnum(SortBy).default(SortBy.name),
+  order: z.nativeEnum(SortOrder).default(SortOrder.asc),
 });
 
 export type TRoundCreateInputSchema = z.infer<typeof ZRoundCreateInputSchema>;
 export type TRoundUpdateInputSchema = z.infer<typeof ZRoundUpdateInputSchema>;
+export type TFilterSchema = z.infer<typeof ZFilterSchema>;

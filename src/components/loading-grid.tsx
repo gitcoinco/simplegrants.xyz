@@ -13,12 +13,14 @@ const columnMap = {
 
 type Props<T> = UseTRPCQueryResult<T[], unknown> & {
   columns?: keyof typeof columnMap;
+  limit?: number;
   renderItem: (item: T, opts: { isLoading: boolean }) => ReactNode;
 };
 export function LoadingGrid<T>({
   data,
   error,
   columns = 3,
+  limit = 6,
   isLoading,
   renderItem,
 }: Props<T>) {
@@ -33,7 +35,7 @@ export function LoadingGrid<T>({
       ) : (
         <div className={cn("grid gap-2", columnMap[columns])}>
           {(
-            data ?? Array.from({ length: 6 }).map((_, id) => ({ id }) as T)
+            data ?? Array.from({ length: limit }).map((_, id) => ({ id }) as T)
           )?.map((item) => renderItem(item, { isLoading }))}
         </div>
       )}

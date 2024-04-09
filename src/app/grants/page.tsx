@@ -1,9 +1,10 @@
-import { DiscoverGrants } from "./_components/discover-grants";
 import { PageSection } from "../(layout)/_components/page-section";
 import { Plus } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { SearchWithFilter } from "~/components/search-filter";
+import { TotalFunding } from "./_components/total-funding";
+import { SearchGrants } from "./_components/search-grants";
 
 export default async function DiscoverGrantsPage() {
   return (
@@ -28,7 +29,8 @@ export default async function DiscoverGrantsPage() {
           },
         ]}
       />
-      <DiscoverGrants />
+      <TotalFunding />
+      <SearchGrants />
     </PageSection>
   );
 }

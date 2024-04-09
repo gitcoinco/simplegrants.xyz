@@ -31,12 +31,13 @@ export const grantRouter = createTRPCRouter({
 
   list: publicProcedure
     .input(ZFilterSchema)
-    .query(async ({ ctx, input: { sortBy, order, search } }) => {
+    .query(async ({ ctx, input: { sortBy, order, search, limit } }) => {
       return ctx.db.grant.findMany({
         where: {
           name: { contains: search, mode: "insensitive" },
           isApproved: true,
         },
+        take: limit,
         orderBy: { [sortBy]: order },
       });
     }),

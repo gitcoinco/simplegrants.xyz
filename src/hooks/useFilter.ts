@@ -1,3 +1,5 @@
+"use client";
+
 import { parseAsString, parseAsStringEnum, useQueryStates } from "nuqs";
 import { SortBy, SortOrder } from "~/server/api/routers/round/round.schemas";
 
