@@ -12,7 +12,7 @@ export default async function LandingPage() {
     <main>
       <div className="mx-auto flex items-center py-16">
         <div>
-          <h1 className="font-heading mb-8 text-pretty text-5xl font-bold leading-snug md:text-6xl">
+          <h1 className="mb-8 text-pretty font-heading text-5xl font-bold leading-snug md:text-6xl">
             Simple Grants allows you to harness the power of Quadratic Funding
             to{" "}
             <span className="text-purple-400">
@@ -51,7 +51,7 @@ export default async function LandingPage() {
 
         <Feature
           href="mailto:contact@simplegrants.xyz"
-          title="Conctact Us"
+          title="Contact Us"
           description="Want to get in touch with the SimpleGrants.xyz team?  Send us an email today."
         >
           <GrantSVG />
@@ -59,7 +59,7 @@ export default async function LandingPage() {
       </section>
 
       <section className="flex flex-col gap-16 py-16">
-        <h3 className="font-heading text-center text-5xl font-bold">
+        <h3 className="text-center font-heading text-5xl font-bold">
           Discover Grants
         </h3>
         <DiscoverGrants limit={3} />
